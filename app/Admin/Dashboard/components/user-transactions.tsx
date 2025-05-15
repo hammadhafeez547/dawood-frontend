@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ArrowUpRight, ArrowDownLeft } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 export function UserTransactions({ userId }: { userId: string }) {
   // Filter transactions for this user
