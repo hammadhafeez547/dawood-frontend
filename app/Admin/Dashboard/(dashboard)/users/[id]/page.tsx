@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, UserCog, Wallet, History, Shield, AlertTriangle } from "lucide-react"
 import Link from "next/link"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { UserTransactions } from "../../../components/user-transactions"
 
 export default function UserProfilePage({ params }: { params: { id: string } }) {
   // In a real app, you would fetch the user data based on the ID
@@ -167,7 +166,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
               <CardDescription>View all transactions for this user</CardDescription>
             </CardHeader>
             <CardContent>
-              <UserTransactions userId={params.id} />
+              {/* <UserTransactions userId={params.id} /> */}
             </CardContent>
           </Card>
         </TabsContent>

@@ -40,13 +40,13 @@ export default function AdminBookings() {
   }, []);
 
   const fetchBookings = async () => {
-    const res = await fetch("http://localhost:4000/ride/");
+    const res = await fetch("https://dawood-backend.vercel.app//ride/");
     const data: Booking[] = await res.json();
     setBookings(data);
   };
 
   const handleStatusUpdate = async (id: string, newStatus: Booking["status"]) => {
-    await fetch(`http://localhost:4000/ride/${id}/status`, {
+    await fetch(`https://dawood-backend.vercel.app//ride/${id}/status`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),

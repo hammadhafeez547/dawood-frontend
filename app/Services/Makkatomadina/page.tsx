@@ -64,7 +64,7 @@ export default function MakkahToMadinahPage() {
   const fetchCars = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.get("http://localhost:4000/service/681da92ec007bebad450fd4d")
+      const res = await axios.get("https://dawood-backend.vercel.app//service/681da92ec007bebad450fd4d")
       console.log("API Response:", res.data)
       setCars(res.data) // ✅ This updates after this function ends
     } catch (err) {

@@ -6,25 +6,41 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { v4 as uuidv4 } from "uuid"
 
+// ✅ Define Car type with specific allowed values
+type Car = {
+  _id: string
+  model: string
+  number: string
+  status: "available" | "booked"
+}
+
 export default function CarsPage() {
-  const [cars, setCars] = useState([])
-  const [newCar, setNewCar] = useState({ model: "", number: "", status: "available" })
+  // ✅ Type the state
+  const [cars, setCars] = useState<Car[]>([])
+  const [newCar, setNewCar] = useState<Omit<Car, "_id">>({
+    model: "",
+    number: "",
+    status: "available",
+  })
 
   const handleAddCar = () => {
     if (!newCar.model || !newCar.number) return
-    const carWithId = { ...newCar, _id: uuidv4() }
+    const carWithId: Car = { ...newCar, _id: uuidv4() }
     setCars([...cars, carWithId])
     setNewCar({ model: "", number: "", status: "available" })
   }
 
-  const handleDeleteCar = (id) => {
+  const handleDeleteCar = (id: string) => {
     setCars(cars.filter((car) => car._id !== id))
   }
 
-  const handleToggleStatus = (id) => {
-    const updatedCars = cars.map((car) =>
+  const handleToggleStatus = (id: string) => {
+    const updatedCars: Car[] = cars.map((car) =>
       car._id === id
-        ? { ...car, status: car.status === "available" ? "booked" : "available" }
+        ? {
+            ...car,
+            status: car.status === "available" ? "booked" : "available",
+          }
         : car
     )
     setCars(updatedCars)
@@ -58,8 +74,12 @@ export default function CarsPage() {
               <CardTitle>{car.model}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <p><strong>Number:</strong> {car.number}</p>
-              <p><strong>Status:</strong> {car.status}</p>
+              <p>
+                <strong>Number:</strong> {car.number}
+              </p>
+              <p>
+                <strong>Status:</strong> {car.status}
+              </p>
               <div className="flex gap-2">
                 <Button variant="destructive" onClick={() => handleDeleteCar(car._id)}>
                   Delete
@@ -75,6 +95,8 @@ export default function CarsPage() {
     </div>
   )
 }
+
+
 // "use client"
 
 // import { useState } from "react"
