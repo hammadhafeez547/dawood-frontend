@@ -1,30 +1,58 @@
-"use client"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Select, SelectTrigger, SelectItem, SelectContent, SelectValue } from "@/components/ui/select"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+"use client";
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
+
+// 1️⃣ Interface for car data
+interface Car {
+  name: string;
+}
+
+// 2️⃣ Interface for booking/ride data
+interface Booking {
+  _id: string;
+  name: string;
+  pickup: string;
+  drop: string;
+  price: number;
+  status: "pending" | "confirmed" | "completed";
+  car?: Car; // optional, in case car is undefined
+}
 
 export default function AdminBookings() {
-  const [bookings, setBookings] = useState([])
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    fetchBookings()
-  }, [])
+    fetchBookings();
+  }, []);
 
   const fetchBookings = async () => {
-    const res = await fetch("http://localhost:4000/ride/")
-    const data = await res.json()
-    setBookings(data)
-  }
+    const res = await fetch("http://localhost:4000/ride/");
+    const data: Booking[] = await res.json();
+    setBookings(data);
+  };
 
-  const handleStatusUpdate = async (id, newStatus) => {
+  const handleStatusUpdate = async (id: string, newStatus: Booking["status"]) => {
     await fetch(`http://localhost:4000/ride/${id}/status`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),
-    })
-    fetchBookings()
-  }
+    });
+    fetchBookings();
+  };
 
   return (
     <div className="space-y-6 p-4 max-w-5xl mx-auto">
@@ -32,19 +60,29 @@ export default function AdminBookings() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {bookings.map((ride) => (
-          <Card className="shadow-md">
+          <Card key={ride._id} className="shadow-md">
             <CardHeader>
-              <CardTitle>{ride.car?.name}</CardTitle>
+              <CardTitle>{ride.car?.name ?? "No Car Info"}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
-              <p><strong>Client:</strong> {ride.name}</p>
-              <p><strong>Route:</strong> {ride.pickup} → {ride.drop}</p>
-              <p><strong>Price:</strong> PKR {ride.price}</p>
+              <p>
+                <strong>Client:</strong> {ride.name}
+              </p>
+              <p>
+                <strong>Route:</strong> {ride.pickup} → {ride.drop}
+              </p>
+              <p>
+                <strong>Price:</strong> PKR {ride.price}
+              </p>
               <div className="flex items-center justify-between">
-                <span><strong>Status:</strong></span>
+                <span>
+                  <strong>Status:</strong>
+                </span>
                 <Select
                   value={ride.status}
-                  onValueChange={(value) => handleStatusUpdate(ride._id, value)}
+                  onValueChange={(value: Booking["status"]) =>
+                    handleStatusUpdate(ride._id, value)
+                  }
                 >
                   <SelectTrigger className="w-[120px]">
                     <SelectValue />
@@ -61,5 +99,5 @@ export default function AdminBookings() {
         ))}
       </div>
     </div>
-  )
+  );
 }

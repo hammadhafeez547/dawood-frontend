@@ -1,104 +1,129 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Save, PlusCircle, Download } from "lucide-react"
-import * as XLSX from "xlsx"
-import Image from "next/image"
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Save, PlusCircle, Download } from "lucide-react";
+import * as XLSX from "xlsx";
+import Image from "next/image";
+
+// 1️⃣ Type for car data
+interface Car {
+  _id: string;
+  name: string;
+  imageUrl: string;
+}
+
+// 2️⃣ Type for fare data (Route)
+interface Route {
+  _id: string;
+  from: string;
+  to: string;
+  fare: number;
+}
+
+// 3️⃣ Component state types
+interface NewRoute {
+  from: string;
+  to: string;
+  fare: string;
+}
 
 export default function CarFareManager() {
-  const [carsList, setCarsList] = useState([])
-  const [selectedCarId, setSelectedCarId] = useState(null)
-  const [carFares, setCarFares] = useState({})
-  const [newRoute, setNewRoute] = useState({ from: "", to: "", fare: "" })
-  const [loading, setLoading] = useState(false)
-
+  const [carsList, setCarsList] = useState<Car[]>([]); // Array of cars
+  const [selectedCarId, setSelectedCarId] = useState<string | null>(null); // Selected car ID
+  const [carFares, setCarFares] = useState<{ [key: string]: Route[] }>({}); // Fare data mapped by car ID
+  const [newRoute, setNewRoute] = useState<NewRoute>({ from: "", to: "", fare: "" }); // New route data
+  const [loading, setLoading] = useState<boolean>(false); // Loading state
 
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await fetch("http://localhost:4000/cars/all-cars")
-        const data = await res.json()
-        setCarsList(data)
+        const res = await fetch("http://localhost:4000/cars/all-cars");
+        const data: Car[] = await res.json();
+        setCarsList(data);
       } catch (error) {
-        console.error("Error fetching cars:", error)
+        console.error("Error fetching cars:", error);
       }
-    }
+    };
 
-    fetchCars()
-  }, [])
+    fetchCars();
+  }, []);
 
-  const fetchFares = async (carId) => {
-    console.log(carId)
-    setLoading(true)
+  const fetchFares = async (carId: string) => {
+    setLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/fare/${carId}`)
-      const data = await res.json()
-      setCarFares((prev) => ({ ...prev, [carId]: data }))
+      const res = await fetch(`http://localhost:4000/fare/${carId}`);
+      const data: Route[] = await res.json();
+      setCarFares((prev) => ({ ...prev, [carId]: data }));
     } catch (error) {
-      console.error("Error fetching fares:", error)
+      console.error("Error fetching fares:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const handleToggle = (carId) => {
-    const isSameCar = selectedCarId === carId
-    setSelectedCarId(isSameCar ? null : carId)
-    if (!isSameCar) fetchFares(carId)
-  }
+  const handleToggle = (carId: string) => {
+    const isSameCar = selectedCarId === carId;
+    setSelectedCarId(isSameCar ? null : carId);
+    if (!isSameCar) fetchFares(carId);
+  };
 
-  const handleFareUpdate = async (fareId, newFare) => {
+  const handleFareUpdate = async (fareId: string, newFare: number) => {
     try {
       await fetch(`http://localhost:4000/fare/${fareId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fare: newFare }),
-      })
-      fetchFares(selectedCarId)
+      });
+      fetchFares(selectedCarId as string);
     } catch (error) {
-      console.error("Error updating fare:", error)
+      console.error("Error updating fare:", error);
     }
-  }
+  };
 
   const handleAddFare = async () => {
-    const { from, to, fare } = newRoute
-    if (!from || !to || !fare) return
+    const { from, to, fare } = newRoute;
+    if (!from || !to || !fare) return;
 
     try {
       await fetch("http://localhost:4000/fare/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ car: selectedCarId, from, to, fare: Number(fare) }),
-      })
-      setNewRoute({ from: "", to: "", fare: "" })
-      fetchFares(selectedCarId)
+        body: JSON.stringify({
+          car: selectedCarId,
+          from,
+          to,
+          fare: Number(fare),
+        }),
+      });
+      setNewRoute({ from: "", to: "", fare: "" });
+      fetchFares(selectedCarId as string);
     } catch (error) {
-      console.error("Error adding fare:", error)
+      console.error("Error adding fare:", error);
     }
-  }
+  };
 
   const exportToExcel = () => {
-    const data = []
+    const data: any[] = [];
     Object.keys(carFares).forEach((carId) => {
-      const car = carsList.find((c) => c._id === carId)
-      const routes = carFares[carId]
+      const car = carsList.find((c) => c._id === carId);
+      const routes = carFares[carId];
       routes.forEach((route) => {
         data.push({
-          Car: car?.model || "Unknown",
+          Car: car?.name || "Unknown",
           From: route.from,
           To: route.to,
           Fare: route.fare,
-        })
-      })
-    })
-    const worksheet = XLSX.utils.json_to_sheet(data)
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Routes")
-    XLSX.writeFile(workbook, "car-routes.xlsx")
-  }
+        });
+      });
+    });
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Routes");
+    XLSX.writeFile(workbook, "car-routes.xlsx");
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto mt-10">
@@ -115,10 +140,10 @@ export default function CarFareManager() {
           <CardHeader onClick={() => handleToggle(car._id)} className="cursor-pointer">
             <CardTitle className="flex items-center gap-2">
               <img
-                        src={`http://localhost:4000${car.imageUrl}`}
-                        alt="Car"
-                        className="w-20 h-12 object-cover rounded"
-                      />
+                src={`http://localhost:4000${car.imageUrl}`}
+                alt="Car"
+                className="w-20 h-12 object-cover rounded"
+              />
               {car.name}
             </CardTitle>
           </CardHeader>
@@ -171,5 +196,5 @@ export default function CarFareManager() {
         </Card>
       ))}
     </div>
-  )
+  );
 }

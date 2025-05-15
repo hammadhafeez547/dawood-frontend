@@ -27,27 +27,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+interface Car {
+  _id: string;
+  name: string;
+  startingPrice: string;
+  brand: string;
+  passengers: string;
+  modifyDate: string;
+  rating: string;
+  reviews: string;
+  category: string;
+  popular: boolean;
+  luggage: string;
+  description: string;
+  imageUrl: string;
+  isAvailable: "Available" | "Booked";
+}
+
+interface NewCar {
+  name: string;
+  imageUrl: File | string;
+  brand: string;
+  startingPrice: string;
+  passengers: string;
+  modifyDate: string;
+  rating: string;
+  reviews: string;
+  category: string;
+  popular: boolean;
+  luggage: string;
+  description: string;
+}
+
 
 export default function CarsPage() {
-  const [cars, setCars] = useState([]);
-  const [newCar, setNewCar] = useState({
-    name: "",
-    imageUrl: "",
-    brand: "",
-    startingPrice: "",
-    passengers: "",
-    modifyDate: "",
-    rating: "",
-    reviews: "",
-    category: "",
-    popular: false,
-    luggage: "",
-    description: "",
-  });
-  const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [editCarId, setEditCarId] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [cars, setCars] = useState<Car[]>([]);
+const [newCar, setNewCar] = useState<NewCar>({
+  name: "",
+  imageUrl: "",
+  brand: "",
+  startingPrice: "",
+  passengers: "",
+  modifyDate: "",
+  rating: "",
+  reviews: "",
+  category: "",
+  popular: false,
+  luggage: "",
+  description: "",
+});
+const [preview, setPreview] = useState<string | null>(null);
+const [loading, setLoading] = useState<boolean>(false);
+const [editCarId, setEditCarId] = useState<string | null>(null);
+const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+
 
   useEffect(() => {
     fetchCars();
@@ -82,7 +115,7 @@ export default function CarsPage() {
 
       formData.append("reviews", newCar.reviews);
       formData.append("brand", newCar.brand);
-      formData.append("popular", newCar.popular);
+formData.append("popular", newCar.popular.toString());
       formData.append("luggage", newCar.luggage);
       formData.append("passengers", newCar.passengers);
       formData.append("description", newCar.description);
@@ -131,7 +164,7 @@ export default function CarsPage() {
     }
   };
 
-  const handleDeleteCar = async (id) => {
+  const handleDeleteCar = async (id : string) => {
     if (!confirm("Are you sure you want to delete this car?")) return;
 
     try {
@@ -143,7 +176,7 @@ export default function CarsPage() {
     }
   };
 
-  const handleEditCar = (car) => {
+  const handleEditCar = (car : Car) => {
     setNewCar({
       name: car.name || "",
       startingPrice: car.startingPrice || "",
@@ -184,7 +217,7 @@ export default function CarsPage() {
     setEditCarId(null);
     setDialogOpen(false);
   };
-  const handleToggleStatus = async (id) => {
+  const handleToggleStatus = async (id : string) => {
     try {
       setLoading(true);
       const selectedCar = cars.find((car) => car._id === id);
@@ -336,21 +369,24 @@ export default function CarsPage() {
                 </SelectContent>
               </Select>
 
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    setNewCar({ ...newCar, imageUrl: file });
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setPreview(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
-              />
+          <Input
+  type="file"
+  accept="image/*"
+  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setNewCar({ ...newCar, imageUrl: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result;
+        if (typeof result === "string") {
+          setPreview(result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }}
+/>
               {preview && (
                 <img
                   src={preview}
