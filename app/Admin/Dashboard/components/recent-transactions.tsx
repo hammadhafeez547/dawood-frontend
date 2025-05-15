@@ -1,5 +1,5 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avator"
 import { ArrowUpRight, ArrowDownLeft } from "lucide-react"
-import { Avatar, AvatarFallback } from "./ui/avatar"
 
 export function RecentTransactions() {
   return (
