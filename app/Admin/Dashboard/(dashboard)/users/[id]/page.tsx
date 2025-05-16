@@ -7,8 +7,7 @@ import { ArrowLeft, UserCog, Wallet, History, Shield, AlertTriangle } from "luci
 import Link from "next/link"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-export default function UserProfilePage({ params }: { params: { id: string } }) {
-  // In a real app, you would fetch the user data based on the ID
+export default async function UserProfilePage({ params }: { params: { id: string } }) {
   const user = users.find((u) => u.id === params.id) || users[0]
 
   return (
@@ -277,3 +276,8 @@ const users = [
     twoFactorEnabled: true,
   },
 ]
+export async function generateStaticParams() {
+  return users.map((user) => ({
+    id: user.id,
+  }))
+}
