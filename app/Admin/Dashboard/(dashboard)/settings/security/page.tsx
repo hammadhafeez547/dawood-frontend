@@ -26,11 +26,8 @@ export default function SecuritySettingsPage() {
     confirmPassword: "",
   })
 
-type AuthUser = {
-  id: string
-}
-
-const { user }: { user: AuthUser | null } = useAuth()
+  // FIX: Just get user directly (string | null)
+  const user = useAuth();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
@@ -83,7 +80,7 @@ const { user }: { user: AuthUser | null } = useAuth()
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {[
+            {[ 
               { id: "currentPassword", label: "Current Password" },
               { id: "newPassword", label: "New Password" },
               { id: "confirmPassword", label: "Confirm New Password" },
