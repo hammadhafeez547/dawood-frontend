@@ -66,7 +66,7 @@ export default function MakkahToMadinahPage() {
     try {
       const res = await axios.get("https://dawood-backend.vercel.app//service/681da92ec007bebad450fd4d")
       console.log("API Response:", res.data)
-      setCars(res.data) // ✅ This updates after this function ends
+      setCars(res.data)
     } catch (err) {
       console.error("Error fetching cars:", err)
     } finally {
@@ -681,14 +681,14 @@ export default function MakkahToMadinahPage() {
                     </p>
 
                     <Accordion type="single" collapsible className="w-full">
-                      {(cars?.faqs?.length > 0 ? cars.faqs : faqs).map((faq, i) => (
-                        <AccordionItem key={i} value={`item-${i}`}>
-                          <AccordionTrigger className="text-left font-medium text-gray-800">
-                            {faq.question}
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-600">{faq.answer}</AccordionContent>
-                        </AccordionItem>
-                      ))}
+                   {(cars?.faqs?.length ? cars.faqs : faqs ?? []).map((faq, i) => (
+  <AccordionItem key={i} value={`item-${i}`}>
+    <AccordionTrigger className="text-left font-medium text-gray-800">
+      {faq.question}
+    </AccordionTrigger>
+    <AccordionContent className="text-gray-600">{faq.answer}</AccordionContent>
+  </AccordionItem>
+))}
                     </Accordion>
 
                     <div className="mt-8 bg-gray-50 p-6 rounded-lg">

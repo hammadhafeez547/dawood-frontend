@@ -1,8 +1,8 @@
-"use client"
-import { useState } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { format } from "date-fns"
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { format } from "date-fns";
 import {
   CalendarIcon,
   ChevronRight,
@@ -18,28 +18,56 @@ import {
   Car,
   Coffee,
   Shield,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+  User,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+type TravelPackage = {
+  id: string;
+  name: string;
+  duration: string;
+  accommodation: string;
+  transportation: string;
+  meals: string;
+  price: number;
+  image: string;
+  description: string;
+};
 
 export default function BookNowPage() {
-  const [step, setStep] = useState(1)
-  const [bookingType, setBookingType] = useState<string>("")
-  const [selectedPackage, setSelectedPackage] = useState<any>(null)
-  const [date, setDate] = useState<Date>()
-  const [returnDate, setReturnDate] = useState<Date>()
-  const [adults, setAdults] = useState(2)
-  const [children, setChildren] = useState(0)
+  const [step, setStep] = useState(1);
+  const [bookingType, setBookingType] = useState<string>("");
+  const [selectedPackage, setSelectedPackage] = useState<any>(null);
+  const [date, setDate] = useState<Date>();
+  const [returnDate, setReturnDate] = useState<Date>();
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -51,174 +79,210 @@ export default function BookNowPage() {
     passportNumber: "",
     passportExpiry: "",
     specialRequirements: "",
-  })
-  const [additionalServices, setAdditionalServices] = useState<string[]>([])
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isBooked, setIsBooked] = useState(false)
-  const [bookingReference, setBookingReference] = useState("")
+  });
+  const [additionalServices, setAdditionalServices] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isBooked, setIsBooked] = useState(false);
+  const [bookingReference, setBookingReference] = useState("");
+  interface BasePackage {
+  id: string;
+  name: string;
+  duration: string;
+  price: number;
+  image: string;
+  description: string;
+}
+
+// Hajj and Umrah packages have extra fields
+interface HajjUmrahPackage extends BasePackage {
+  accommodation: string;
+  transportation: string;
+  meals: string;
+}
+
+// Transportation packages have different fields
+interface TransportationPackage extends BasePackage {
+  vehicle: string;
+  capacity: string;
+}
+
+// Ziyarat packages have a guide field
+interface ZiyaratPackage extends BasePackage {
+  transportation: string;
+  guide: string;
+}
+
+// Full packages type
+interface Packages {
+  hajj: HajjUmrahPackage[];
+  umrah: HajjUmrahPackage[];
+  transportation: TransportationPackage[];
+  ziyarat: ZiyaratPackage[];
+}
+
 
   // Sample packages data
-  const packages = {
-    hajj: [
-      {
-        id: "hajj-standard",
-        name: "Standard Hajj Package",
-        duration: "14 days",
-        accommodation: "3-star hotels",
-        transportation: "Shared bus transportation",
-        meals: "Breakfast included",
-        price: 3500,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Our Standard Hajj Package provides all the essentials for a fulfilling pilgrimage experience with comfortable accommodations and reliable transportation.",
-      },
-      {
-        id: "hajj-premium",
-        name: "Premium Hajj Package",
-        duration: "16 days",
-        accommodation: "4-star hotels",
-        transportation: "Premium bus transportation",
-        meals: "Full board (3 meals daily)",
-        price: 5000,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "The Premium Hajj Package offers an enhanced pilgrimage experience with superior accommodations, full-board meals, and premium transportation services.",
-      },
-      {
-        id: "hajj-luxury",
-        name: "Luxury Hajj Package",
-        duration: "18 days",
-        accommodation: "5-star hotels near Haram",
-        transportation: "VIP transportation",
-        meals: "Full board with premium dining options",
-        price: 7500,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Experience the ultimate in comfort and convenience with our Luxury Hajj Package, featuring 5-star accommodations near the holy sites and personalized service throughout your journey.",
-      },
-    ],
-    umrah: [
-      {
-        id: "umrah-basic",
-        name: "Basic Umrah Package",
-        duration: "7 days",
-        accommodation: "3-star hotels",
-        transportation: "Shared transportation",
-        meals: "Breakfast only",
-        price: 1200,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Our Basic Umrah Package provides all the essentials for a meaningful Umrah experience at an affordable price.",
-      },
-      {
-        id: "umrah-standard",
-        name: "Standard Umrah Package",
-        duration: "10 days",
-        accommodation: "4-star hotels",
-        transportation: "Private transportation",
-        meals: "Half board (breakfast and dinner)",
-        price: 1800,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "The Standard Umrah Package offers a comfortable pilgrimage experience with quality accommodations and convenient transportation options.",
-      },
-      {
-        id: "umrah-premium",
-        name: "Premium Umrah Package",
-        duration: "14 days",
-        accommodation: "5-star hotels near Haram",
-        transportation: "VIP transportation",
-        meals: "Full board (3 meals daily)",
-        price: 2500,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Our Premium Umrah Package provides a luxurious pilgrimage experience with premium accommodations, dining, and transportation services.",
-      },
-      {
-        id: "umrah-ramadan",
-        name: "Ramadan Umrah Special",
-        duration: "10 days",
-        accommodation: "4-star hotels near Haram",
-        transportation: "Private transportation",
-        meals: "Suhoor and Iftar included",
-        price: 2200,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Experience the spiritual atmosphere of Ramadan in the holy cities with our special Ramadan Umrah Package, featuring accommodations near the holy sites and special Ramadan meals.",
-      },
-    ],
-    transportation: [
-      {
-        id: "transport-airport",
-        name: "Airport Transfer Service",
-        duration: "One-way or round trip",
-        vehicle: "Sedan or SUV",
-        capacity: "Up to 4 passengers",
-        price: 50,
-        image: "/placeholder.svg?height=300&width=500",
-        description: "Convenient airport transfer service between Jeddah Airport and your hotel in Makkah or Madinah.",
-      },
-      {
-        id: "transport-makkah-madinah",
-        name: "Makkah to Madinah Transfer",
-        duration: "One-way or round trip",
-        vehicle: "Luxury van",
-        capacity: "Up to 7 passengers",
-        price: 120,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Comfortable transportation service between Makkah and Madinah with experienced drivers familiar with the route.",
-      },
-      {
-        id: "transport-city-tour",
-        name: "City Tour Service",
-        duration: "Full day or half day",
-        vehicle: "Luxury van or bus",
-        capacity: "Various options available",
-        price: 200,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Explore the historical and cultural sites of Makkah and Madinah with our guided city tour service.",
-      },
-    ],
-    ziyarat: [
-      {
-        id: "ziyarat-makkah",
-        name: "Makkah Ziyarat Tour",
-        duration: "Half day",
-        transportation: "Air-conditioned bus",
-        guide: "English-speaking religious guide",
-        price: 75,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Visit the historical and religious sites of Makkah with our guided Ziyarat tour, including Jabal al-Noor, Jabal Thawr, and other significant locations.",
-      },
-      {
-        id: "ziyarat-madinah",
-        name: "Madinah Ziyarat Tour",
-        duration: "Full day",
-        transportation: "Air-conditioned bus",
-        guide: "English-speaking religious guide",
-        price: 90,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Explore the historical sites of Madinah with our comprehensive Ziyarat tour, including Masjid Quba, Masjid Qiblatain, and Mount Uhud.",
-      },
-      {
-        id: "ziyarat-comprehensive",
-        name: "Comprehensive Ziyarat Package",
-        duration: "2 days",
-        transportation: "Luxury van",
-        guide: "Knowledgeable religious scholar",
-        price: 150,
-        image: "/placeholder.svg?height=300&width=500",
-        description:
-          "Our most comprehensive Ziyarat package covering all major historical and religious sites in both Makkah and Madinah with in-depth explanations.",
-      },
-    ],
-  }
-
+ const packages: Packages = {
+  hajj: [
+    {
+      id: "hajj-standard",
+      name: "Standard Hajj Package",
+      duration: "14 days",
+      accommodation: "3-star hotels",
+      transportation: "Shared bus transportation",
+      meals: "Breakfast included",
+      price: 3500,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Our Standard Hajj Package provides all the essentials for a fulfilling pilgrimage experience with comfortable accommodations and reliable transportation.",
+    },
+    {
+      id: "hajj-premium",
+      name: "Premium Hajj Package",
+      duration: "16 days",
+      accommodation: "4-star hotels",
+      transportation: "Premium bus transportation",
+      meals: "Full board (3 meals daily)",
+      price: 5000,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "The Premium Hajj Package offers an enhanced pilgrimage experience with superior accommodations, full-board meals, and premium transportation services.",
+    },
+    {
+      id: "hajj-luxury",
+      name: "Luxury Hajj Package",
+      duration: "18 days",
+      accommodation: "5-star hotels near Haram",
+      transportation: "VIP transportation",
+      meals: "Full board with premium dining options",
+      price: 7500,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Experience the ultimate in comfort and convenience with our Luxury Hajj Package, featuring 5-star accommodations near the holy sites and personalized service throughout your journey.",
+    },
+  ],
+  umrah: [
+    {
+      id: "umrah-basic",
+      name: "Basic Umrah Package",
+      duration: "7 days",
+      accommodation: "3-star hotels",
+      transportation: "Shared transportation",
+      meals: "Breakfast only",
+      price: 1200,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Our Basic Umrah Package provides all the essentials for a meaningful Umrah experience at an affordable price.",
+    },
+    {
+      id: "umrah-standard",
+      name: "Standard Umrah Package",
+      duration: "10 days",
+      accommodation: "4-star hotels",
+      transportation: "Private transportation",
+      meals: "Half board (breakfast and dinner)",
+      price: 1800,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "The Standard Umrah Package offers a comfortable pilgrimage experience with quality accommodations and convenient transportation options.",
+    },
+    {
+      id: "umrah-premium",
+      name: "Premium Umrah Package",
+      duration: "14 days",
+      accommodation: "5-star hotels near Haram",
+      transportation: "VIP transportation",
+      meals: "Full board (3 meals daily)",
+      price: 2500,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Our Premium Umrah Package provides a luxurious pilgrimage experience with premium accommodations, dining, and transportation services.",
+    },
+    {
+      id: "umrah-ramadan",
+      name: "Ramadan Umrah Special",
+      duration: "10 days",
+      accommodation: "4-star hotels near Haram",
+      transportation: "Private transportation",
+      meals: "Suhoor and Iftar included",
+      price: 2200,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Experience the spiritual atmosphere of Ramadan in the holy cities with our special Ramadan Umrah Package, featuring accommodations near the holy sites and special Ramadan meals.",
+    },
+  ],
+  transportation: [
+    {
+      id: "transport-airport",
+      name: "Airport Transfer Service",
+      duration: "One-way or round trip",
+      vehicle: "Sedan or SUV",
+      capacity: "Up to 4 passengers",
+      price: 50,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Convenient airport transfer service between Jeddah Airport and your hotel in Makkah or Madinah.",
+    },
+    {
+      id: "transport-makkah-madinah",
+      name: "Makkah to Madinah Transfer",
+      duration: "One-way or round trip",
+      vehicle: "Luxury van",
+      capacity: "Up to 7 passengers",
+      price: 120,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Comfortable transportation service between Makkah and Madinah with experienced drivers familiar with the route.",
+    },
+    {
+      id: "transport-city-tour",
+      name: "City Tour Service",
+      duration: "Full day or half day",
+      vehicle: "Luxury van or bus",
+      capacity: "Various options available",
+      price: 200,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Explore the historical and cultural sites of Makkah and Madinah with our guided city tour service.",
+    },
+  ],
+  ziyarat: [
+    {
+      id: "ziyarat-makkah",
+      name: "Makkah Ziyarat Tour",
+      duration: "Half day",
+      transportation: "Air-conditioned bus",
+      guide: "English-speaking religious guide",
+      price: 75,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Visit the historical and religious sites of Makkah with our guided Ziyarat tour, including Jabal al-Noor, Jabal Thawr, and other significant locations.",
+    },
+    {
+      id: "ziyarat-madinah",
+      name: "Madinah Ziyarat Tour",
+      duration: "Full day",
+      transportation: "Air-conditioned bus",
+      guide: "English-speaking religious guide",
+      price: 90,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Explore the historical sites of Madinah with our comprehensive Ziyarat tour, including Masjid Quba, Masjid Qiblatain, and Mount Uhud.",
+    },
+    {
+      id: "ziyarat-comprehensive",
+      name: "Comprehensive Ziyarat Package",
+      duration: "2 days",
+      transportation: "Luxury van",
+      guide: "Knowledgeable religious scholar",
+      price: 150,
+      image: "/placeholder.svg?height=300&width=500",
+      description:
+        "Our most comprehensive Ziyarat package covering all major historical and religious sites in both Makkah and Madinah with in-depth explanations.",
+    },
+  ],
+};
   // Additional services
   const additionalServiceOptions = [
     {
@@ -230,7 +294,8 @@ export default function BookNowPage() {
     {
       id: "airport-transfer",
       label: "Airport Transfers",
-      description: "Comfortable transportation between the airport and your hotel",
+      description:
+        "Comfortable transportation between the airport and your hotel",
       price: 50,
     },
     {
@@ -248,7 +313,8 @@ export default function BookNowPage() {
     {
       id: "wheelchair",
       label: "Wheelchair Assistance",
-      description: "Wheelchair service for elderly or those with mobility issues",
+      description:
+        "Wheelchair service for elderly or those with mobility issues",
       price: 80,
     },
     {
@@ -257,92 +323,99 @@ export default function BookNowPage() {
       description: "Saudi Arabia SIM card with data and local calling minutes",
       price: 30,
     },
-  ]
+  ];
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user types
     if (errors[field]) {
       setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const handleAdditionalServiceToggle = (serviceId: string) => {
     setAdditionalServices((prev) =>
-      prev.includes(serviceId) ? prev.filter((id) => id !== serviceId) : [...prev, serviceId],
-    )
-  }
+      prev.includes(serviceId)
+        ? prev.filter((id) => id !== serviceId)
+        : [...prev, serviceId]
+    );
+  };
 
   const validateStep = (currentStep: number) => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (currentStep === 1) {
-      if (!bookingType) newErrors.bookingType = "Please select a booking type"
+      if (!bookingType) newErrors.bookingType = "Please select a booking type";
     } else if (currentStep === 2) {
-      if (!selectedPackage) newErrors.package = "Please select a package"
+      if (!selectedPackage) newErrors.package = "Please select a package";
     } else if (currentStep === 3) {
-      if (!date) newErrors.date = "Please select a departure date"
-      if (bookingType !== "transportation" && !returnDate) newErrors.returnDate = "Please select a return date"
+      if (!date) newErrors.date = "Please select a departure date";
+      if (bookingType !== "transportation" && !returnDate)
+        newErrors.returnDate = "Please select a return date";
     } else if (currentStep === 4) {
-      if (!formData.firstName.trim()) newErrors.firstName = "First name is required"
-      if (!formData.lastName.trim()) newErrors.lastName = "Last name is required"
+      if (!formData.firstName.trim())
+        newErrors.firstName = "First name is required";
+      if (!formData.lastName.trim())
+        newErrors.lastName = "Last name is required";
       if (!formData.email.trim()) {
-        newErrors.email = "Email is required"
+        newErrors.email = "Email is required";
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-        newErrors.email = "Email is invalid"
+        newErrors.email = "Email is invalid";
       }
-      if (!formData.phone.trim()) newErrors.phone = "Phone number is required"
-      if (!formData.passportNumber.trim()) newErrors.passportNumber = "Passport number is required"
+      if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+      if (!formData.passportNumber.trim())
+        newErrors.passportNumber = "Passport number is required";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const nextStep = () => {
     if (validateStep(step)) {
-      setStep(step + 1)
-      window.scrollTo(0, 0)
+      setStep(step + 1);
+      window.scrollTo(0, 0);
     }
-  }
+  };
 
   const prevStep = () => {
-    setStep(step - 1)
-    window.scrollTo(0, 0)
-  }
+    setStep(step - 1);
+    window.scrollTo(0, 0);
+  };
 
   const handleSubmit = () => {
     if (validateStep(step)) {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
 
       // Simulate API call
       setTimeout(() => {
-        setIsSubmitting(false)
-        setIsBooked(true)
-        setBookingReference(`BK${Math.floor(100000 + Math.random() * 900000)}`)
-      }, 2000)
+        setIsSubmitting(false);
+        setIsBooked(true);
+        setBookingReference(`BK${Math.floor(100000 + Math.random() * 900000)}`);
+      }, 2000);
     }
-  }
+  };
 
   const calculateTotal = () => {
-    if (!selectedPackage) return 0
+    if (!selectedPackage) return 0;
 
-    let total = selectedPackage.price * adults + selectedPackage.price * 0.7 * children
+    let total =
+      selectedPackage.price * adults + selectedPackage.price * 0.7 * children;
 
     // Add additional services
     additionalServices.forEach((serviceId) => {
-      const service = additionalServiceOptions.find((s) => s.id === serviceId)
+      const service = additionalServiceOptions.find((s) => s.id === serviceId);
       if (service) {
-        total += service.price * (adults + children)
+        total += service.price * (adults + children);
       }
-    })
+    });
 
-    return total
-  }
+    return total;
+  };
 
   const renderStepIndicator = () => {
     return (
@@ -355,8 +428,8 @@ export default function BookNowPage() {
                   stepNumber === step
                     ? "bg-orange-600 text-white"
                     : stepNumber < step
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-500"
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-200 text-gray-500"
                 } mx-auto`}
               >
                 {stepNumber < step ? <Check className="h-5 w-5" /> : stepNumber}
@@ -365,12 +438,12 @@ export default function BookNowPage() {
                 {stepNumber === 1
                   ? "Type"
                   : stepNumber === 2
-                    ? "Package"
-                    : stepNumber === 3
-                      ? "Dates"
-                      : stepNumber === 4
-                        ? "Details"
-                        : "Confirm"}
+                  ? "Package"
+                  : stepNumber === 3
+                  ? "Dates"
+                  : stepNumber === 4
+                  ? "Details"
+                  : "Confirm"}
               </div>
               {stepNumber < 5 && (
                 <div
@@ -383,8 +456,8 @@ export default function BookNowPage() {
           ))}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const renderBookingTypeStep = () => {
     return (
@@ -394,10 +467,13 @@ export default function BookNowPage() {
         transition={{ duration: 0.5 }}
         className="max-w-3xl mx-auto"
       >
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Select Booking Type</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Select Booking Type
+        </h2>
         <p className="text-gray-600 mb-8">
-          Choose the type of service you'd like to book. We offer comprehensive packages for Hajj and Umrah, as well as
-          transportation and Ziyarat tour services.
+          Choose the type of service you'd like to book. We offer comprehensive
+          packages for Hajj and Umrah, as well as transportation and Ziyarat
+          tour services.
         </p>
 
         {errors.bookingType && (
@@ -412,25 +488,29 @@ export default function BookNowPage() {
             {
               id: "hajj",
               title: "Hajj Packages",
-              description: "Complete Hajj packages with accommodation, transportation, and guidance",
+              description:
+                "Complete Hajj packages with accommodation, transportation, and guidance",
               icon: <MapPin className="h-10 w-10 text-orange-500" />,
             },
             {
               id: "umrah",
               title: "Umrah Packages",
-              description: "Comprehensive Umrah packages for a fulfilling pilgrimage experience",
+              description:
+                "Comprehensive Umrah packages for a fulfilling pilgrimage experience",
               icon: <Plane className="h-10 w-10 text-orange-500" />,
             },
             {
               id: "transportation",
               title: "Transportation Services",
-              description: "Reliable transportation between airports, hotels, and holy sites",
+              description:
+                "Reliable transportation between airports, hotels, and holy sites",
               icon: <Car className="h-10 w-10 text-orange-500" />,
             },
             {
               id: "ziyarat",
               title: "Ziyarat Tours",
-              description: "Guided tours to historical and religious sites in Makkah and Madinah",
+              description:
+                "Guided tours to historical and religious sites in Makkah and Madinah",
               icon: <MapPin className="h-10 w-10 text-orange-500" />,
             },
           ].map((type) => (
@@ -444,8 +524,12 @@ export default function BookNowPage() {
               onClick={() => setBookingType(type.id)}
             >
               <div className="flex flex-col items-center text-center">
-                <div className="p-3 bg-orange-100 rounded-full mb-4">{type.icon}</div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{type.title}</h3>
+                <div className="p-3 bg-orange-100 rounded-full mb-4">
+                  {type.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  {type.title}
+                </h3>
                 <p className="text-gray-600 text-sm">{type.description}</p>
               </div>
             </div>
@@ -453,114 +537,152 @@ export default function BookNowPage() {
         </div>
 
         <div className="mt-8 flex justify-end">
-          <Button className="bg-orange-600 hover:bg-orange-700" onClick={nextStep}>
+          <Button
+            className="bg-orange-600 hover:bg-orange-700"
+            onClick={nextStep}
+          >
             Continue <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </motion.div>
-    )
-  }
+    );
+  };
 
-  const renderPackageSelectionStep = () => {
-    const availablePackages = packages[bookingType as keyof typeof packages] || []
+ type BookingType = keyof Packages;
 
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
-      >
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Select a Package</h2>
-        <p className="text-gray-600 mb-8">
-          Choose from our carefully designed packages that cater to different preferences and budgets.
-        </p>
+type AnyPackage =
+  | HajjUmrahPackage
+  | TransportationPackage
+  | ZiyaratPackage;
 
-        {errors.package && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-red-600">
-            <AlertCircle className="h-5 w-5" />
-            <p>{errors.package}</p>
-          </div>
-        )}
+const renderPackageSelectionStep = () => {
+  const availablePackages =
+    packages[bookingType as BookingType] as AnyPackage[];
 
-        <div className="space-y-6">
-          {availablePackages.map((pkg) => (
-            <div
-              key={pkg.id}
-              className={`border rounded-lg overflow-hidden transition-all hover:shadow-md ${
-                selectedPackage?.id === pkg.id
-                  ? "border-orange-500 bg-orange-50 shadow-md"
-                  : "border-gray-200 hover:border-orange-300"
-              }`}
-              onClick={() => setSelectedPackage(pkg)}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3">
-                <div className="relative h-48 md:h-auto">
-                  <Image src={pkg.image || "/placeholder.svg"} alt={pkg.name} fill className="object-cover" />
-                </div>
-                <div className="p-6 md:col-span-2">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold text-gray-800">{pkg.name}</h3>
-                    <div className="text-2xl font-bold text-orange-600">
-                      ${pkg.price}
-                      <span className="text-sm font-normal text-gray-500">/person</span>
-                    </div>
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-4xl mx-auto"
+    >
+      <h2 className="text-2xl font-bold text-gray-800 mb-2">Select a Package</h2>
+      <p className="text-gray-600 mb-8">
+        Choose from our carefully designed packages that cater to different preferences and budgets.
+      </p>
+
+      {errors.package && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-red-600">
+          <AlertCircle className="h-5 w-5" />
+          <p>{errors.package}</p>
+        </div>
+      )}
+
+      <div className="space-y-6">
+        {availablePackages.map((pkg) => (
+          <div
+            key={pkg.id}
+            className={`border rounded-lg overflow-hidden transition-all hover:shadow-md ${
+              selectedPackage?.id === pkg.id
+                ? "border-orange-500 bg-orange-50 shadow-md"
+                : "border-gray-200 hover:border-orange-300"
+            }`}
+            onClick={() => setSelectedPackage(pkg)}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              <div className="relative h-48 md:h-auto">
+                <Image
+                  src={pkg.image || "/placeholder.svg"}
+                  alt={pkg.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-6 md:col-span-2">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-xl font-bold text-gray-800">{pkg.name}</h3>
+                  <div className="text-2xl font-bold text-orange-600">
+                    ${pkg.price}
+                    <span className="text-sm font-normal text-gray-500">/person</span>
                   </div>
-                  <p className="text-gray-600 mb-4">{pkg.description}</p>
+                </div>
+                <p className="text-gray-600 mb-4">{pkg.description}</p>
 
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-orange-500" />
+                    <span className="text-sm text-gray-600">Duration: {pkg.duration}</span>
+                  </div>
+
+                  {"accommodation" in pkg && (
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-orange-500" />
-                      <span className="text-sm text-gray-600">Duration: {pkg.duration}</span>
+                      <Hotel className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm text-gray-600">
+                        Accommodation: {pkg.accommodation}
+                      </span>
                     </div>
-                    {pkg.accommodation && (
-                      <div className="flex items-center gap-2">
-                        <Hotel className="h-4 w-4 text-orange-500" />
-                        <span className="text-sm text-gray-600">Accommodation: {pkg.accommodation}</span>
-                      </div>
-                    )}
-                    {pkg.transportation && (
-                      <div className="flex items-center gap-2">
-                        <Car className="h-4 w-4 text-orange-500" />
-                        <span className="text-sm text-gray-600">Transportation: {pkg.transportation}</span>
-                      </div>
-                    )}
-                    {pkg.meals && (
-                      <div className="flex items-center gap-2">
-                        <Coffee className="h-4 w-4 text-orange-500" />
-                        <span className="text-sm text-gray-600">Meals: {pkg.meals}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <Button
-                    variant={selectedPackage?.id === pkg.id ? "default" : "outline"}
-                    className={
-                      selectedPackage?.id === pkg.id
-                        ? "bg-orange-600 hover:bg-orange-700"
-                        : "text-orange-600 border-orange-200 hover:bg-orange-50"
-                    }
-                    onClick={() => setSelectedPackage(pkg)}
-                  >
-                    {selectedPackage?.id === pkg.id ? "Selected" : "Select Package"}
-                  </Button>
+                  )}
+                  {"transportation" in pkg && (
+                    <div className="flex items-center gap-2">
+                      <Car className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm text-gray-600">
+                        Transportation: {pkg.transportation}
+                      </span>
+                    </div>
+                  )}
+                  {"meals" in pkg && (
+                    <div className="flex items-center gap-2">
+                      <Coffee className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm text-gray-600">Meals: {pkg.meals}</span>
+                    </div>
+                  )}
+                  {"vehicle" in pkg && (
+                    <div className="flex items-center gap-2">
+                      <Car className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm text-gray-600">Vehicle: {pkg.vehicle}</span>
+                    </div>
+                  )}
+                  {"guide" in pkg && (
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm text-gray-600">Guide: {pkg.guide}</span>
+                    </div>
+                  )}
                 </div>
+
+                <Button
+                  variant={
+                    selectedPackage?.id === pkg.id ? "default" : "outline"
+                  }
+                  className={
+                    selectedPackage?.id === pkg.id
+                      ? "bg-orange-600 hover:bg-orange-700"
+                      : "text-orange-600 border-orange-200 hover:bg-orange-50"
+                  }
+                  onClick={() => setSelectedPackage(pkg)}
+                >
+                  {selectedPackage?.id === pkg.id ? "Selected" : "Select Package"}
+                </Button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="mt-8 flex justify-between">
-          <Button variant="outline" onClick={prevStep}>
-            <ChevronLeft className="mr-2 h-4 w-4" /> Back
-          </Button>
-          <Button className="bg-orange-600 hover:bg-orange-700" onClick={nextStep}>
-            Continue <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      </motion.div>
-    )
-  }
+      <div className="mt-8 flex justify-between">
+        <Button variant="outline" onClick={prevStep}>
+          <ChevronLeft className="mr-2 h-4 w-4" /> Back
+        </Button>
+        <Button
+          className="bg-orange-600 hover:bg-orange-700"
+          onClick={nextStep}
+        >
+          Continue <ChevronRight className="ml-2 h-4 w-4" />
+        </Button>
+      </div>
+    </motion.div>
+  );
+};
 
   const renderDateSelectionStep = () => {
     return (
@@ -573,7 +695,12 @@ export default function BookNowPage() {
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Select Dates</h2>
         <p className="text-gray-600 mb-8">
           Choose your preferred dates for your{" "}
-          {bookingType === "hajj" ? "Hajj" : bookingType === "umrah" ? "Umrah" : ""} journey.
+          {bookingType === "hajj"
+            ? "Hajj"
+            : bookingType === "umrah"
+            ? "Umrah"
+            : ""}{" "}
+          journey.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -589,7 +716,13 @@ export default function BookNowPage() {
                         errors.date ? "border-red-500" : "border-input"
                       }`}
                     >
-                      {date ? format(date, "PPP") : <span className="text-muted-foreground">Select date</span>}
+                      {date ? (
+                        format(date, "PPP")
+                      ) : (
+                        <span className="text-muted-foreground">
+                          Select date
+                        </span>
+                      )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -626,7 +759,9 @@ export default function BookNowPage() {
                         {returnDate ? (
                           format(returnDate, "PPP")
                         ) : (
-                          <span className="text-muted-foreground">Select date</span>
+                          <span className="text-muted-foreground">
+                            Select date
+                          </span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -637,7 +772,9 @@ export default function BookNowPage() {
                         selected={returnDate}
                         onSelect={setReturnDate}
                         initialFocus
-                        disabled={(date) => date < (this.date || new Date())}
+                        disabled={(currentDate) =>
+                          currentDate < (date || new Date())
+                        }
                       />
                     </PopoverContent>
                   </Popover>
@@ -702,7 +839,9 @@ export default function BookNowPage() {
           </div>
 
           <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">Booking Summary</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-4">
+              Booking Summary
+            </h3>
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">Package:</span>
@@ -714,26 +853,37 @@ export default function BookNowPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Departure:</span>
-                <span>{date ? format(date, "MMM d, yyyy") : "Not selected"}</span>
+                <span>
+                  {date ? format(date, "MMM d, yyyy") : "Not selected"}
+                </span>
               </div>
               {bookingType !== "transportation" && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">Return:</span>
-                  <span>{returnDate ? format(returnDate, "MMM d, yyyy") : "Not selected"}</span>
+                  <span>
+                    {returnDate
+                      ? format(returnDate, "MMM d, yyyy")
+                      : "Not selected"}
+                  </span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span className="text-gray-600">Travelers:</span>
                 <span>
                   {adults} Adult{adults !== 1 ? "s" : ""}
-                  {children > 0 && `, ${children} Child${children !== 1 ? "ren" : ""}`}
+                  {children > 0 &&
+                    `, ${children} Child${children !== 1 ? "ren" : ""}`}
                 </span>
               </div>
               <Separator />
               <div className="flex justify-between font-bold">
                 <span>Estimated Total:</span>
                 <span className="text-orange-600">
-                  ${(selectedPackage?.price * adults + selectedPackage?.price * 0.7 * children).toFixed(2)}
+                  $
+                  {(
+                    selectedPackage?.price * adults +
+                    selectedPackage?.price * 0.7 * children
+                  ).toFixed(2)}
                 </span>
               </div>
             </div>
@@ -744,13 +894,16 @@ export default function BookNowPage() {
           <Button variant="outline" onClick={prevStep}>
             <ChevronLeft className="mr-2 h-4 w-4" /> Back
           </Button>
-          <Button className="bg-orange-600 hover:bg-orange-700" onClick={nextStep}>
+          <Button
+            className="bg-orange-600 hover:bg-orange-700"
+            onClick={nextStep}
+          >
             Continue <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </motion.div>
-    )
-  }
+    );
+  };
 
   const renderPersonalDetailsStep = () => {
     return (
@@ -760,9 +913,12 @@ export default function BookNowPage() {
         transition={{ duration: 0.5 }}
         className="max-w-3xl mx-auto"
       >
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Personal Details</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          Personal Details
+        </h2>
         <p className="text-gray-600 mb-8">
-          Please provide your personal information to complete your booking. All fields marked with * are required.
+          Please provide your personal information to complete your booking. All
+          fields marked with * are required.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6 flex items-start gap-3">
@@ -770,8 +926,8 @@ export default function BookNowPage() {
           <div>
             <p className="text-blue-800 font-medium">Important Information</p>
             <p className="text-blue-700 text-sm">
-              Please ensure that all information matches your passport exactly. Any discrepancies may result in travel
-              issues.
+              Please ensure that all information matches your passport exactly.
+              Any discrepancies may result in travel issues.
             </p>
           </div>
         </div>
@@ -878,7 +1034,10 @@ export default function BookNowPage() {
 
           <div className="space-y-2">
             <Label htmlFor="country">Country</Label>
-            <Select value={formData.country} onValueChange={(value) => handleInputChange("country", value)}>
+            <Select
+              value={formData.country}
+              onValueChange={(value) => handleInputChange("country", value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select your country" />
               </SelectTrigger>
@@ -906,7 +1065,9 @@ export default function BookNowPage() {
                 id="passportNumber"
                 placeholder="Enter your passport number"
                 value={formData.passportNumber}
-                onChange={(e) => handleInputChange("passportNumber", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("passportNumber", e.target.value)
+                }
                 className={errors.passportNumber ? "border-red-500" : ""}
               />
               {errors.passportNumber && (
@@ -922,25 +1083,34 @@ export default function BookNowPage() {
                 id="passportExpiry"
                 type="date"
                 value={formData.passportExpiry}
-                onChange={(e) => handleInputChange("passportExpiry", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("passportExpiry", e.target.value)
+                }
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="specialRequirements">Special Requirements or Requests</Label>
+            <Label htmlFor="specialRequirements">
+              Special Requirements or Requests
+            </Label>
             <Input
               id="specialRequirements"
               placeholder="Any special requirements or requests"
               value={formData.specialRequirements}
-              onChange={(e) => handleInputChange("specialRequirements", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("specialRequirements", e.target.value)
+              }
             />
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-800">Additional Services</h3>
+            <h3 className="text-lg font-medium text-gray-800">
+              Additional Services
+            </h3>
             <p className="text-gray-600 text-sm">
-              Enhance your journey with these optional services. Additional charges apply.
+              Enhance your journey with these optional services. Additional
+              charges apply.
             </p>
 
             <div className="space-y-3">
@@ -949,16 +1119,23 @@ export default function BookNowPage() {
                   <Checkbox
                     id={service.id}
                     checked={additionalServices.includes(service.id)}
-                    onCheckedChange={() => handleAdditionalServiceToggle(service.id)}
+                    onCheckedChange={() =>
+                      handleAdditionalServiceToggle(service.id)
+                    }
                   />
                   <div className="grid gap-1.5 leading-none">
                     <label
                       htmlFor={service.id}
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center"
                     >
-                      {service.label} <span className="ml-2 text-orange-600 font-medium">${service.price}/person</span>
+                      {service.label}{" "}
+                      <span className="ml-2 text-orange-600 font-medium">
+                        ${service.price}/person
+                      </span>
                     </label>
-                    <p className="text-sm text-muted-foreground">{service.description}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {service.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -970,13 +1147,16 @@ export default function BookNowPage() {
           <Button variant="outline" onClick={prevStep}>
             <ChevronLeft className="mr-2 h-4 w-4" /> Back
           </Button>
-          <Button className="bg-orange-600 hover:bg-orange-700" onClick={nextStep}>
+          <Button
+            className="bg-orange-600 hover:bg-orange-700"
+            onClick={nextStep}
+          >
             Continue <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </motion.div>
-    )
-  }
+    );
+  };
 
   const renderConfirmationStep = () => {
     return (
@@ -991,27 +1171,40 @@ export default function BookNowPage() {
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Check className="h-10 w-10 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Booking Confirmed!</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Booking Confirmed!
+            </h2>
             <p className="text-gray-600 mb-6">
-              Your booking has been successfully confirmed. We've sent a confirmation email to {formData.email}.
+              Your booking has been successfully confirmed. We've sent a
+              confirmation email to {formData.email}.
             </p>
             <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Booking Reference</h3>
-              <p className="text-3xl font-bold text-orange-600 mb-2">{bookingReference}</p>
+              <h3 className="text-lg font-bold text-gray-800 mb-4">
+                Booking Reference
+              </h3>
+              <p className="text-3xl font-bold text-orange-600 mb-2">
+                {bookingReference}
+              </p>
               <p className="text-gray-600 text-sm">
-                Please save this reference number for future communications regarding your booking.
+                Please save this reference number for future communications
+                regarding your booking.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-orange-600 hover:bg-orange-700">Download Confirmation</Button>
+              <Button className="bg-orange-600 hover:bg-orange-700">
+                Download Confirmation
+              </Button>
               <Button variant="outline">Return to Home</Button>
             </div>
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Review and Confirm</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Review and Confirm
+            </h2>
             <p className="text-gray-600 mb-8">
-              Please review your booking details before confirming. You can go back to make changes if needed.
+              Please review your booking details before confirming. You can go
+              back to make changes if needed.
             </p>
 
             <div className="space-y-6">
@@ -1023,11 +1216,16 @@ export default function BookNowPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Package Type:</span>
-                      <span className="font-medium">{bookingType.charAt(0).toUpperCase() + bookingType.slice(1)}</span>
+                      <span className="font-medium">
+                        {bookingType.charAt(0).toUpperCase() +
+                          bookingType.slice(1)}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Selected Package:</span>
-                      <span className="font-medium">{selectedPackage?.name}</span>
+                      <span className="font-medium">
+                        {selectedPackage?.name}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Duration:</span>
@@ -1035,19 +1233,26 @@ export default function BookNowPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Departure Date:</span>
-                      <span>{date ? format(date, "MMMM d, yyyy") : "Not selected"}</span>
+                      <span>
+                        {date ? format(date, "MMMM d, yyyy") : "Not selected"}
+                      </span>
                     </div>
                     {bookingType !== "transportation" && (
                       <div className="flex justify-between">
                         <span className="text-gray-600">Return Date:</span>
-                        <span>{returnDate ? format(returnDate, "MMMM d, yyyy") : "Not selected"}</span>
+                        <span>
+                          {returnDate
+                            ? format(returnDate, "MMMM d, yyyy")
+                            : "Not selected"}
+                        </span>
                       </div>
                     )}
                     <div className="flex justify-between">
                       <span className="text-gray-600">Travelers:</span>
                       <span>
                         {adults} Adult{adults !== 1 ? "s" : ""}
-                        {children > 0 && `, ${children} Child${children !== 1 ? "ren" : ""}`}
+                        {children > 0 &&
+                          `, ${children} Child${children !== 1 ? "ren" : ""}`}
                       </span>
                     </div>
                   </div>
@@ -1061,26 +1266,36 @@ export default function BookNowPage() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500 mb-1">Full Name</h4>
+                      <h4 className="text-sm font-medium text-gray-500 mb-1">
+                        Full Name
+                      </h4>
                       <p>
                         {formData.firstName} {formData.lastName}
                       </p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500 mb-1">Email</h4>
+                      <h4 className="text-sm font-medium text-gray-500 mb-1">
+                        Email
+                      </h4>
                       <p>{formData.email}</p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500 mb-1">Phone</h4>
+                      <h4 className="text-sm font-medium text-gray-500 mb-1">
+                        Phone
+                      </h4>
                       <p>{formData.phone}</p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-gray-500 mb-1">Passport Number</h4>
+                      <h4 className="text-sm font-medium text-gray-500 mb-1">
+                        Passport Number
+                      </h4>
                       <p>{formData.passportNumber}</p>
                     </div>
                     {formData.address && (
                       <div className="md:col-span-2">
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Address</h4>
+                        <h4 className="text-sm font-medium text-gray-500 mb-1">
+                          Address
+                        </h4>
                         <p>
                           {formData.address}
                           {formData.city && `, ${formData.city}`}
@@ -1090,7 +1305,9 @@ export default function BookNowPage() {
                     )}
                     {formData.specialRequirements && (
                       <div className="md:col-span-2">
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Special Requirements</h4>
+                        <h4 className="text-sm font-medium text-gray-500 mb-1">
+                          Special Requirements
+                        </h4>
                         <p>{formData.specialRequirements}</p>
                       </div>
                     )}
@@ -1106,13 +1323,17 @@ export default function BookNowPage() {
                   <CardContent>
                     <ul className="space-y-2">
                       {additionalServices.map((serviceId) => {
-                        const service = additionalServiceOptions.find((s) => s.id === serviceId)
+                        const service = additionalServiceOptions.find(
+                          (s) => s.id === serviceId
+                        );
                         return (
                           <li key={serviceId} className="flex justify-between">
                             <span>{service?.label}</span>
-                            <span className="font-medium">${service?.price}/person</span>
+                            <span className="font-medium">
+                              ${service?.price}/person
+                            </span>
                           </li>
-                        )
+                        );
                       })}
                     </ul>
                   </CardContent>
@@ -1127,33 +1348,45 @@ export default function BookNowPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">
-                        {selectedPackage?.name} x {adults} Adult{adults !== 1 ? "s" : ""}
+                        {selectedPackage?.name} x {adults} Adult
+                        {adults !== 1 ? "s" : ""}
                       </span>
                       <span>${selectedPackage?.price * adults}</span>
                     </div>
                     {children > 0 && (
                       <div className="flex justify-between">
                         <span className="text-gray-600">
-                          {selectedPackage?.name} x {children} Child{children !== 1 ? "ren" : ""} (30% discount)
+                          {selectedPackage?.name} x {children} Child
+                          {children !== 1 ? "ren" : ""} (30% discount)
                         </span>
-                        <span>${(selectedPackage?.price * 0.7 * children).toFixed(2)}</span>
+                        <span>
+                          $
+                          {(selectedPackage?.price * 0.7 * children).toFixed(2)}
+                        </span>
                       </div>
                     )}
                     {additionalServices.map((serviceId) => {
-                      const service = additionalServiceOptions.find((s) => s.id === serviceId)
+                      const service = additionalServiceOptions.find(
+                        (s) => s.id === serviceId
+                      );
                       return (
                         <div key={serviceId} className="flex justify-between">
                           <span className="text-gray-600">
-                            {service?.label} x {adults + children} person{adults + children !== 1 ? "s" : ""}
+                            {service?.label} x {adults + children} person
+                            {adults + children !== 1 ? "s" : ""}
                           </span>
-                          <span>${(service?.price || 0) * (adults + children)}</span>
+                          <span>
+                            ${(service?.price || 0) * (adults + children)}
+                          </span>
                         </div>
-                      )
+                      );
                     })}
                     <Separator />
                     <div className="flex justify-between font-bold">
                       <span>Total Amount</span>
-                      <span className="text-orange-600">${calculateTotal().toFixed(2)}</span>
+                      <span className="text-orange-600">
+                        ${calculateTotal().toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 </CardContent>
@@ -1162,10 +1395,12 @@ export default function BookNowPage() {
                     <div className="flex items-start gap-3">
                       <Shield className="h-5 w-5 text-orange-600 mt-0.5" />
                       <div>
-                        <p className="text-orange-800 font-medium">Secure Payment</p>
+                        <p className="text-orange-800 font-medium">
+                          Secure Payment
+                        </p>
                         <p className="text-orange-700 text-sm">
-                          Your payment information is encrypted and secure. We never store your full credit card
-                          details.
+                          Your payment information is encrypted and secure. We
+                          never store your full credit card details.
                         </p>
                       </div>
                     </div>
@@ -1200,7 +1435,11 @@ export default function BookNowPage() {
               <Button variant="outline" onClick={prevStep}>
                 <ChevronLeft className="mr-2 h-4 w-4" /> Back
               </Button>
-              <Button className="bg-orange-600 hover:bg-orange-700" onClick={handleSubmit} disabled={isSubmitting}>
+              <Button
+                className="bg-orange-600 hover:bg-orange-700"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? (
                   <>
                     <svg
@@ -1233,8 +1472,8 @@ export default function BookNowPage() {
           </>
         )}
       </motion.div>
-    )
-  }
+    );
+  };
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -1243,7 +1482,13 @@ export default function BookNowPage() {
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-b from-gray-900 to-gray-800 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image src="/madina2.jpg" alt="Background" fill sizes="100vw" className="object-cover opacity-30" />
+          <Image
+            src="/madina2.jpg"
+            alt="Background"
+            fill
+            sizes="100vw"
+            className="object-cover opacity-30"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/80" />
           <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10" />
         </div>
@@ -1255,11 +1500,14 @@ export default function BookNowPage() {
             transition={{ duration: 0.6 }}
             className="text-center text-white max-w-3xl mx-auto"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Book Your Journey</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Book Your Journey
+            </h1>
             <div className="w-24 h-1 bg-orange-500 mx-auto my-6"></div>
             <p className="text-lg text-gray-300 mb-8">
-              Begin your spiritual journey with Dawood Tours. Our easy booking process will help you secure your
-              pilgrimage package in just a few steps.
+              Begin your spiritual journey with Dawood Tours. Our easy booking
+              process will help you secure your pilgrimage package in just a few
+              steps.
             </p>
           </motion.div>
         </div>
@@ -1289,11 +1537,14 @@ export default function BookNowPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-800">Why Book With Us</h2>
+            <h2 className="text-3xl font-bold text-gray-800">
+              Why Book With Us
+            </h2>
             <div className="w-24 h-1 bg-orange-500 mx-auto my-4"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Dawood Tours has been providing exceptional pilgrimage services since 1995. Here's why thousands of
-              pilgrims choose us for their sacred journey.
+              Dawood Tours has been providing exceptional pilgrimage services
+              since 1995. Here's why thousands of pilgrims choose us for their
+              sacred journey.
             </p>
           </motion.div>
 
@@ -1325,8 +1576,12 @@ export default function BookNowPage() {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
-                <div className="mb-4 p-3 bg-orange-100 rounded-lg inline-block">{feature.icon}</div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{feature.title}</h3>
+                <div className="mb-4 p-3 bg-orange-100 rounded-lg inline-block">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  {feature.title}
+                </h3>
                 <p className="text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
@@ -1343,10 +1598,13 @@ export default function BookNowPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-800">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold text-gray-800">
+              Frequently Asked Questions
+            </h2>
             <div className="w-24 h-1 bg-orange-500 mx-auto my-4"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Find answers to common questions about our booking process and services.
+              Find answers to common questions about our booking process and
+              services.
             </p>
           </motion.div>
 
@@ -1354,14 +1612,17 @@ export default function BookNowPage() {
             <Tabs defaultValue="booking" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="booking">Booking Process</TabsTrigger>
-                <TabsTrigger value="payment">Payment & Cancellation</TabsTrigger>
+                <TabsTrigger value="payment">
+                  Payment & Cancellation
+                </TabsTrigger>
                 <TabsTrigger value="travel">Travel Information</TabsTrigger>
               </TabsList>
               <TabsContent value="booking" className="mt-6">
                 <div className="space-y-4">
                   {[
                     {
-                      question: "How far in advance should I book my Hajj or Umrah package?",
+                      question:
+                        "How far in advance should I book my Hajj or Umrah package?",
                       answer:
                         "We recommend booking your Hajj package at least 6-8 months in advance to ensure availability. For Umrah, booking 2-3 months in advance is generally sufficient, though during peak seasons like Ramadan, earlier booking is advised.",
                     },
@@ -1371,7 +1632,8 @@ export default function BookNowPage() {
                         "Yes, we offer customizable packages to meet your specific needs. You can select additional services during the booking process or contact our customer service team for more extensive customizations.",
                     },
                     {
-                      question: "What documents do I need to complete my booking?",
+                      question:
+                        "What documents do I need to complete my booking?",
                       answer:
                         "To complete your booking, you'll need a valid passport with at least 6 months validity, passport-sized photographs, and completed application forms. Additional requirements may apply based on your country of residence.",
                     },
@@ -1381,8 +1643,13 @@ export default function BookNowPage() {
                         "Yes, you can book for groups of any size. For large groups (10+ people), please contact our customer service team directly for special group rates and arrangements.",
                     },
                   ].map((faq, index) => (
-                    <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                      <h3 className="text-lg font-medium text-gray-800 mb-2">{faq.question}</h3>
+                    <div
+                      key={index}
+                      className="bg-white p-6 rounded-lg shadow-sm border border-gray-100"
+                    >
+                      <h3 className="text-lg font-medium text-gray-800 mb-2">
+                        {faq.question}
+                      </h3>
                       <p className="text-gray-600">{faq.answer}</p>
                     </div>
                   ))}
@@ -1412,8 +1679,13 @@ export default function BookNowPage() {
                         "Yes, we offer comprehensive travel insurance options that cover trip cancellation, medical emergencies, and lost luggage. We strongly recommend purchasing travel insurance for your pilgrimage journey.",
                     },
                   ].map((faq, index) => (
-                    <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                      <h3 className="text-lg font-medium text-gray-800 mb-2">{faq.question}</h3>
+                    <div
+                      key={index}
+                      className="bg-white p-6 rounded-lg shadow-sm border border-gray-100"
+                    >
+                      <h3 className="text-lg font-medium text-gray-800 mb-2">
+                        {faq.question}
+                      </h3>
                       <p className="text-gray-600">{faq.answer}</p>
                     </div>
                   ))}
@@ -1423,12 +1695,14 @@ export default function BookNowPage() {
                 <div className="space-y-4">
                   {[
                     {
-                      question: "What visa requirements are needed for Hajj and Umrah?",
+                      question:
+                        "What visa requirements are needed for Hajj and Umrah?",
                       answer:
                         "Visa requirements vary by country of residence. Generally, you'll need a special Hajj or Umrah visa, which we can assist with as part of our package. These visas have specific validity periods and cannot be used for other types of travel to Saudi Arabia.",
                     },
                     {
-                      question: "What vaccinations are required for travel to Saudi Arabia?",
+                      question:
+                        "What vaccinations are required for travel to Saudi Arabia?",
                       answer:
                         "Saudi Arabia requires pilgrims to have valid vaccination certificates for meningitis (ACWY vaccine). Depending on your country of origin, additional vaccinations may be required. We recommend consulting with your healthcare provider before travel.",
                     },
@@ -1438,13 +1712,19 @@ export default function BookNowPage() {
                         "Baggage allowance varies by airline and ticket class. Typically, economy class passengers are allowed one checked bag (23kg) and one carry-on bag. We'll provide specific baggage information for your flights in your travel documents.",
                     },
                     {
-                      question: "Do you provide assistance for elderly or disabled pilgrims?",
+                      question:
+                        "Do you provide assistance for elderly or disabled pilgrims?",
                       answer:
                         "Yes, we offer special assistance services for elderly and disabled pilgrims, including wheelchair services, accessible transportation, and accommodations. Please specify any special requirements during the booking process.",
                     },
                   ].map((faq, index) => (
-                    <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                      <h3 className="text-lg font-medium text-gray-800 mb-2">{faq.question}</h3>
+                    <div
+                      key={index}
+                      className="bg-white p-6 rounded-lg shadow-sm border border-gray-100"
+                    >
+                      <h3 className="text-lg font-medium text-gray-800 mb-2">
+                        {faq.question}
+                      </h3>
                       <p className="text-gray-600">{faq.answer}</p>
                     </div>
                   ))}
@@ -1460,14 +1740,21 @@ export default function BookNowPage() {
         <div className="container mx-auto px-4">
           <div className="bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl overflow-hidden shadow-xl">
             <div className="p-8 md:p-12 text-center text-white">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Need Assistance with Your Booking?</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                Need Assistance with Your Booking?
+              </h2>
               <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-                Our customer service team is available 24/7 to help you with any questions or special requirements for
-                your pilgrimage journey.
+                Our customer service team is available 24/7 to help you with any
+                questions or special requirements for your pilgrimage journey.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="bg-white text-orange-600 hover:bg-gray-100">Contact Support</Button>
-                <Button variant="outline" className="text-white border-white/30 hover:bg-white/10">
+                <Button className="bg-white text-orange-600 hover:bg-gray-100">
+                  Contact Support
+                </Button>
+                <Button
+                  variant="outline"
+                  className="text-white border-white/30 hover:bg-white/10"
+                >
                   View FAQs
                 </Button>
               </div>
@@ -1477,5 +1764,5 @@ export default function BookNowPage() {
       </section>
       <Footer />
     </main>
-  )
+  );
 }

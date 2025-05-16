@@ -1,6 +1,11 @@
 "use client"
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Asterisk } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useRef } from "react"
@@ -8,34 +13,34 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 export default function Process() {
-  // Refs for elements we want to animate
-  const sectionRef = useRef(null)
-  const titleRef = useRef(null)
-  const asteriskRef = useRef(null)
-  const aboutTextRef = useRef(null)
-  const descriptionRef = useRef(null)
-  const accordionRef = useRef(null)
-  const footerTextRef = useRef(null)
-  const imageContainerRef = useRef(null)
-  const starIconRef = useRef(null)
-  const orangeAsteriskRef = useRef(null)
-  const statsBoxRef = useRef(null)
-  const accordionItemsRef = useRef([])
+  // Typed refs
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const titleRef = useRef<HTMLHeadingElement | null>(null)
+  const asteriskRef = useRef<HTMLSpanElement | null>(null)
+  const aboutTextRef = useRef<HTMLSpanElement | null>(null)
+  const descriptionRef = useRef<HTMLParagraphElement | null>(null)
+  const accordionRef = useRef<HTMLDivElement | null>(null)
+  const footerTextRef = useRef<HTMLParagraphElement | null>(null)
+  const imageContainerRef = useRef<HTMLDivElement | null>(null)
+  const starIconRef = useRef<HTMLDivElement | null>(null)
+  const orangeAsteriskRef = useRef<HTMLDivElement | null>(null)
+  const statsBoxRef = useRef<HTMLDivElement | null>(null)
+
+  // For multiple refs (accordion items)
+  const accordionItemsRef = useRef<HTMLDivElement[]>([])
 
   useEffect(() => {
-    // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger)
 
-    // Create a timeline for our animations
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "top 80%", // Start animation when the top of the section is 80% from the top of the viewport
+        start: "top 80%",
         toggleActions: "play none none none",
       },
     })
 
-    // Clear any existing animations
+    // Reset animations
     gsap.set(
       [
         titleRef.current,
@@ -53,7 +58,7 @@ export default function Process() {
       { clearProps: "all" },
     )
 
-    // Initial states
+    // Set initial states
     gsap.set(titleRef.current, { opacity: 0, y: 30 })
     gsap.set(asteriskRef.current, { opacity: 0, rotation: -180 })
     gsap.set(aboutTextRef.current, { opacity: 0, x: -20 })
@@ -64,11 +69,11 @@ export default function Process() {
     gsap.set(starIconRef.current, { opacity: 0, scale: 0 })
     gsap.set(orangeAsteriskRef.current, { opacity: 0, scale: 0, rotation: -180 })
     gsap.set(statsBoxRef.current, { opacity: 0, y: 50 })
-    accordionItemsRef.current.forEach((item, index) => {
+    accordionItemsRef.current.forEach((item) => {
       gsap.set(item, { opacity: 0, y: 20 })
     })
 
-    // Animation sequence
+    // Animation timeline
     tl.to(asteriskRef.current, {
       opacity: 1,
       rotation: 0,
@@ -135,7 +140,6 @@ export default function Process() {
         "-=0.6",
       )
 
-    // Animate accordion items with stagger
     tl.to(accordionRef.current, {
       opacity: 1,
       y: 0,
@@ -174,50 +178,45 @@ export default function Process() {
       "-=0.3",
     )
 
-    // Hover effect for stats box
+    // Hover effects
     const statsBox = statsBoxRef.current
-    if (statsBox) {
-      statsBox.addEventListener("mouseenter", () => {
-        gsap.to(statsBox, {
-          scale: 1.05,
-          boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-          duration: 0.3,
-        })
-      })
-
-      statsBox.addEventListener("mouseleave", () => {
-        gsap.to(statsBox, {
-          scale: 1,
-          boxShadow: "none",
-          duration: 0.3,
-        })
-      })
-    }
-
-    // Hover effect for image
     const imageContainer = imageContainerRef.current
-    if (imageContainer) {
-      imageContainer.addEventListener("mouseenter", () => {
-        gsap.to(imageContainer, { scale: 1.03, duration: 0.3 })
-      })
 
-      imageContainer.addEventListener("mouseleave", () => {
-        gsap.to(imageContainer, { scale: 1, duration: 0.3 })
+    const handleStatsMouseEnter = () => {
+      gsap.to(statsBox, {
+        scale: 1.05,
+        boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
+        duration: 0.3,
       })
     }
 
-    // Cleanup function
-    return () => {
-      if (statsBox) {
-        statsBox.removeEventListener("mouseenter", () => {})
-        statsBox.removeEventListener("mouseleave", () => {})
-      }
-      if (imageContainer) {
-        imageContainer.removeEventListener("mouseenter", () => {})
-        imageContainer.removeEventListener("mouseleave", () => {})
-      }
+    const handleStatsMouseLeave = () => {
+      gsap.to(statsBox, {
+        scale: 1,
+        boxShadow: "none",
+        duration: 0.3,
+      })
+    }
 
-      // Kill all animations and ScrollTriggers when component unmounts
+    const handleImageEnter = () => {
+      gsap.to(imageContainer, { scale: 1.03, duration: 0.3 })
+    }
+
+    const handleImageLeave = () => {
+      gsap.to(imageContainer, { scale: 1, duration: 0.3 })
+    }
+
+    statsBox?.addEventListener("mouseenter", handleStatsMouseEnter)
+    statsBox?.addEventListener("mouseleave", handleStatsMouseLeave)
+    imageContainer?.addEventListener("mouseenter", handleImageEnter)
+    imageContainer?.addEventListener("mouseleave", handleImageLeave)
+
+    return () => {
+      statsBox?.removeEventListener("mouseenter", handleStatsMouseEnter)
+      statsBox?.removeEventListener("mouseleave", handleStatsMouseLeave)
+      imageContainer?.removeEventListener("mouseenter", handleImageEnter)
+      imageContainer?.removeEventListener("mouseleave", handleImageLeave)
+
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
       gsap.killTweensOf([
         titleRef.current,
@@ -235,8 +234,8 @@ export default function Process() {
     }
   }, [])
 
-  // Function to add accordion items to the ref array
-  const addToAccordionRefs = (el) => {
+  // Push accordion refs
+  const addToAccordionRefs = (el: HTMLDivElement | null) => {
     if (el && !accordionItemsRef.current.includes(el)) {
       accordionItemsRef.current.push(el)
     }
@@ -288,8 +287,12 @@ export default function Process() {
                 ].map((item) => (
                   <div key={item.value} ref={addToAccordionRefs}>
                     <AccordionItem value={item.value} className="border-b">
-                      <AccordionTrigger className="text-sm font-medium py-4">{item.trigger}</AccordionTrigger>
-                      <AccordionContent className="text-xs text-gray-500 pb-4">{item.content}</AccordionContent>
+                      <AccordionTrigger className="text-sm font-medium py-4">
+                        {item.trigger}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-gray-500 pb-4">
+                        {item.content}
+                      </AccordionContent>
                     </AccordionItem>
                   </div>
                 ))}
@@ -303,17 +306,23 @@ export default function Process() {
           </div>
 
           <div className="relative">
-            {/* Oval image container with border */}
             <div
               ref={imageContainerRef}
               className="relative w-[320px] h-[380px] border-2 border-white rounded-[40%] overflow-hidden shadow-xl"
               style={{ borderRadius: "40% / 30%" }}
             >
               <Image src="/OIP.jpeg" alt="Person in car" fill className="object-cover" />
-
-              {/* Star at bottom */}
-              <div ref={starIconRef} className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 text-indigo-900">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div
+                ref={starIconRef}
+                className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 text-indigo-900"
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M12 0L13.46 8.59L22 8.66L15.27 14.15L17.82 22.44L12 16.9L6.18 22.44L8.73 14.15L2 8.66L10.54 8.59L12 0Z"
                     fill="currentColor"
@@ -322,13 +331,10 @@ export default function Process() {
               </div>
             </div>
 
-            {/* Orange asterisk */}
             <div ref={orangeAsteriskRef} className="absolute top-10 right-[-30px] text-orange-600">
-            <Asterisk className="w-12 h-12 text-orange-500" />
-
+              <Asterisk className="w-12 h-12 text-orange-500" />
             </div>
 
-            {/* Stats box */}
             <div
               ref={statsBoxRef}
               className="absolute -bottom-4 right-0 bg-orange-500 text-white p-4 rounded-lg cursor-pointer"

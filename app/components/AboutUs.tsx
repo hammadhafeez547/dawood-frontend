@@ -14,48 +14,48 @@ export default function AboutSection() {
   const textRef = useRef<HTMLDivElement>(null)
   const featuresRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
+ useEffect(() => {
+  gsap.registerPlugin(ScrollTrigger)
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: containerRef.current,
+      start: "top 80%",
+    },
+  })
+
+  tl.from(imageRef.current, {
+    x: -50,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out",
+  })
+    .from(
+      textRef.current,
+      {
+        x: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
       },
-    })
+      "-=0.7"
+    )
+    .from(
+      Array.from(featuresRef.current?.children || []), // ✅ convert HTMLCollection to array
+      {
+        y: 20,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "power2.out",
+      },
+      "-=0.5"
+    )
 
-    tl.from(imageRef.current, {
-      x: -50,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-    })
-      .from(
-        textRef.current,
-        {
-          x: 50,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
-        },
-        "-=0.7",
-      )
-      .from(
-        featuresRef.current?.children,
-        {
-          y: 20,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-        },
-        "-=0.5",
-      )
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-    }
-  }, [])
+  return () => {
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+  }
+}, [])
 
   const features = [
     "Licensed and certified drivers",

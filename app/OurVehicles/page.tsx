@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Car, Users, Gauge, Calendar, CheckCircle, Filter, Search, Star } from "lucide-react"
@@ -424,7 +424,7 @@ export default function VehiclesPage() {
                               <div className="mb-4">
                                 <h4 className="font-medium text-gray-800 mb-2">Features:</h4>
                                 <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
-                                  {selectedVehicle.features.map((feature, i) => (
+                                  {selectedVehicle.features.map((feature: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, i: Key | null | undefined) => (
                                     <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                       <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                       <span>{feature}</span>
@@ -606,7 +606,7 @@ export default function VehiclesPage() {
                                 <div className="mb-4">
                                   <h4 className="font-medium text-gray-800 mb-2">Features:</h4>
                                   <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
-                                    {selectedVehicle.features.map((feature, i) => (
+                                    {selectedVehicle.features.map((feature: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, i: Key | null | undefined) => (
                                       <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                         <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                         <span>{feature}</span>
@@ -757,7 +757,7 @@ export default function VehiclesPage() {
                                     <div className="mb-4">
                                       <h4 className="font-medium text-gray-800 mb-2">Features:</h4>
                                       <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
-                                        {selectedVehicle.features.map((feature, i) => (
+                                        {selectedVehicle.features.map((feature: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, i: Key | null | undefined) => (
                                           <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                             <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                             <span>{feature}</span>

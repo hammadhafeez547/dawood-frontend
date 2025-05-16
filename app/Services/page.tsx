@@ -63,7 +63,7 @@ export default function ServicesPage() {
   const filteorangeServices = activeTab === "all" ? services : services.filter((service) => service.category === activeTab)
 
   // Get featuorange services
-  const featuorangeServices = services.filter((service) => service.featuorange)
+  const featuorangeServices = services.filter((service) => service.featured)
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
