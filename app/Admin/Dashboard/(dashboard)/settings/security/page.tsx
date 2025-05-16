@@ -26,7 +26,11 @@ export default function SecuritySettingsPage() {
     confirmPassword: "",
   })
 
-  const { user} = useAuth() // assuming `useAuth` returns `{ user }`
+type AuthUser = {
+  id: string
+}
+
+const { user }: { user: AuthUser | null } = useAuth()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
