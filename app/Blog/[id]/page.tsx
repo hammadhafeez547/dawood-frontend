@@ -1,14 +1,19 @@
-"use client"
+"use client";
 import { useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
+
 import { Calendar, Clock, ChevronLeft, Facebook, Twitter, Linkedin, Mail, Bookmark, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Navbar from "@/app/components/Navbar"
-
-export default function page({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+export default function Page({ params }: PageProps) {
   // In a real app, you would fetch the blog post data based on the ID
   // For this example, we'll use a sample blog post
   const blogPost = {
