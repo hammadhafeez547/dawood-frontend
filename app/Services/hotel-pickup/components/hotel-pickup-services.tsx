@@ -8,23 +8,26 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, Clock, Users, MapPin, Calendar, Star, ArrowRight, Phone } from "lucide-react"
+import Navbar from "@/app/components/Navbar"
+import Footer from "@/app/components/Footer"
 
 export default function HotelPickupServices() {
   const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div className="w-full">
+        <Navbar />
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-orange-800 to-orange-600 text-white py-16 md:py-24">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-black opacity-40"></div>
-          <Image
+          {/* <Image
             src="/placeholder.svg?height=1080&width=1920"
             alt="Hotel Pickup Service"
             fill
             className="object-cover"
             priority
-          />
+          /> */}
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl">
@@ -614,6 +617,7 @@ export default function HotelPickupServices() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

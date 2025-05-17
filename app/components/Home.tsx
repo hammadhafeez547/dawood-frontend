@@ -30,8 +30,13 @@ export default function Home() {
         <div className="relative">
           <span className="absolute inset-0 rounded-full bg-green-500 opacity-75 animate-ping"></span>
           <div className="relative flex items-center gap-2 bg-green-600 text-white px-4 py-3 rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 group">
-            <Phone className="w-6 h-6" />
-            <span className="font-medium hidden md:inline group-hover:translate-x-1 transition-transform duration-300">
+  <Image
+                          src="/whatsapp.svg"
+                          alt="orange Audi Car"
+                          width={40}
+                          height={40}
+                          className="object-contain"
+                        />            <span className="font-medium hidden md:inline group-hover:translate-x-1 transition-transform duration-300">
               Chat on WhatsApp
             </span>
           </div>
@@ -120,6 +125,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
               className="mt-8 flex flex-col sm:flex-row justify-center gap-4"
             >
+             <Link href={"/Packages"}>
               <motion.button
                 whileHover={{ scale: 1.05, backgroundColor: "#ea580c" }}
                 whileTap={{ scale: 0.95 }}
@@ -128,6 +134,7 @@ export default function Home() {
                 <Calendar className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
                 <span className="group-hover:translate-x-1 transition-transform duration-300">View Packages</span>
               </motion.button>
+             </Link>
               <motion.button
                 whileHover={{ scale: 1.05, backgroundColor: "#f8fafc" }}
                 whileTap={{ scale: 0.95 }}

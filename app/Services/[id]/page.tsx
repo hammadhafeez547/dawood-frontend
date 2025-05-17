@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import {
   Accordion,
@@ -84,33 +84,57 @@ interface TransportService {
 }
 
 
-export default async function ServiceDetails(){
-   const params = useParams();
-  const id = Array.isArray(params?.id) ? params.id[0] : params?.id ? decodeURIComponent(params.id) : null;
-  const [serviceType, setServiceType] = useState("standard");
-  const [cars, setCars] = useState<TransportService | null>(null);
-  const [selectedTab, setSelectedTab] = useState("overview");
-  const [isLoading, setIsLoading] = useState(true);
+
+export default function ServiceDetails() {
+  const router = useRouter()
+  const params = useParams()
+
+  const id = Array.isArray(params?.id)
+    ? params.id[0]
+    : params?.id
+    ? decodeURIComponent(params.id)
+    : null
+
+  // ✅ UseEffect for redirect
+  useEffect(() => {
+    if (!id) return
+
+    const redirectMap: Record<string, string> = {
+      "City-tours": "/Services/City-tours",
+      "Group-transport": "/Services/Group-transport",
+      "Hotel-pickup": "/Services/Hotel-pickup",
+      "umrah-transportation": "/Services/umrah-transportation",
+      "ziyarat-transportation": "/Services/ziyarat-transportation",
+    }
+
+    if (redirectMap[id]) {
+      router.replace(redirectMap[id])
+    }
+  }, [id, router])
+
+  // ✅ State & API
+  const [serviceType, setServiceType] = useState("standard")
+  const [cars, setCars] = useState<TransportService | null>(null)
+  const [selectedTab, setSelectedTab] = useState("overview")
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetchRoutes();
-  }, []);
+    if (!id) return
+    fetchRoutes()
+  }, [id])
 
   const fetchRoutes = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const res = await axios.get(
-        `https://dawood-backend.vercel.app/service/${id}`
-      );
-      console.log("API Response:", res.data);
-      setCars(res.data);
+      const res = await axios.get(`https://dawood-backend.vercel.app/service/${id}`)
+      console.log("API Response:", res.data)
+      setCars(res.data)
     } catch (err) {
-      console.error("Error fetching cars:", err);
+      console.error("Error fetching cars:", err)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
+  }
   // ✅ Watch state update
   useEffect(() => {
     console.log("Updated cars state:", cars);

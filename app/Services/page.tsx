@@ -71,7 +71,7 @@ export default function ServicesPage() {
     featured: true,
   },
     {
-      id: "city-tour",
+      id: "City-tours",
       title: "City Tours (Ziyarat)",
       description:
         "Guided Ziyarat tours with experienced drivers across historical Islamic landmarks.",
@@ -89,7 +89,7 @@ export default function ServicesPage() {
       category: "transportation",
     },
     {
-      id: "group-transport",
+      id: "Group-transport",
       title: "Group Transport",
       description:
         "Spacious vehicles available for families, groups, and Hajj/Umrah pilgrims’ group travel.",
@@ -98,7 +98,7 @@ export default function ServicesPage() {
       category: "transportation",
     },
     {
-      id: "hotel-pickup",
+      id: "Hotel-pickup",
       title: "Hotel Pickup & Drop",
       description:
         "Comfortable travel to/from your hotel to Masjid al-Haram or Masjid al-Nabawi.",
