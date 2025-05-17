@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { useParams } from "next/navigation";
+
 import {
   Accordion,
   AccordionContent,
@@ -81,18 +83,10 @@ interface TransportService {
   __v: number;
 }
 
-interface ServiceDetailsProps {
-  params: {
-    id: string;
-  };
-}
 
-export default async function ServiceDetailsPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+export default async function ServiceDetails(){
+   const params = useParams();
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id ? decodeURIComponent(params.id) : null;
   const [serviceType, setServiceType] = useState("standard");
   const [cars, setCars] = useState<TransportService | null>(null);
   const [selectedTab, setSelectedTab] = useState("overview");
