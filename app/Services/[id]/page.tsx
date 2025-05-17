@@ -61,7 +61,7 @@ interface ServiceDetailsProps {
   };
 }
 
-export default async function ServiceDetailsPage({ params }: ServiceDetailsProps) {
+export default function ServiceDetailsPage({ params }: ServiceDetailsProps) {
   const { id } = params;
     const [serviceType, setServiceType] = useState("standard")
  const [cars, setCars] = useState<TransportService | null>(null);  const [selectedTab, setSelectedTab] = useState("overview")
