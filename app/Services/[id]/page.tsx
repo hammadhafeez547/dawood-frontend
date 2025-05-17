@@ -52,19 +52,31 @@ interface TransportService {
   __v: number;
 }
 
-export default function MakkahToMadinahPage() {
-  const [serviceType, setServiceType] = useState("standard")
+
+
+
+interface ServiceDetailsProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ServiceDetailsPage({ params }: ServiceDetailsProps) {
+  const { id } = params;
+    const [serviceType, setServiceType] = useState("standard")
  const [cars, setCars] = useState<TransportService | null>(null);  const [selectedTab, setSelectedTab] = useState("overview")
   const [isLoading, setIsLoading] = useState(true)
 
+
+  
   useEffect(() => {
-    fetchCars()
+    fetchRoutes()
   }, [])
 
-  const fetchCars = async () => {
+  const fetchRoutes = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.get("https://dawood-backend.vercel.app//service/681da92ec007bebad450fd4d")
+      const res = await axios.get(`https://dawood-backend.vercel.app/service/${id}`)
       console.log("API Response:", res.data)
       setCars(res.data)
     } catch (err) {
@@ -73,6 +85,7 @@ export default function MakkahToMadinahPage() {
       setIsLoading(false)
     }
   }
+
 
   // ✅ Watch state update
   useEffect(() => {
