@@ -36,12 +36,12 @@ export default function HotelPickupServices() {
               Reliable, comfortable, and punctual transportation to and from your hotel in Makkah and Madinah.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/book-now">
+              <Link href="/Book">
                 <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50">
                   Book Now
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/Contact">
                 <Button
                   variant="outline"
                   size="lg"
@@ -436,7 +436,7 @@ export default function HotelPickupServices() {
                 </div>
               </div>
               <div className="mt-8 text-center">
-                <Link href="/contact">
+                <Link href="/Contact">
                   <Button size="lg" className="bg-orange-600 hover:bg-orange-700">
                     Request Custom Quote
                   </Button>
@@ -604,12 +604,12 @@ export default function HotelPickupServices() {
             contact us for more information.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/book-now">
+            <Link href="/Book">
               <Button size="lg" className="bg-orange-600 hover:bg-orange-700">
                 Book Now <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href="/Contact">
               <Button variant="outline" size="lg" className="border-orange-600 text-orange-600 hover:bg-orange-50">
                 <Phone className="mr-2 h-5 w-5" /> Contact Us
               </Button>

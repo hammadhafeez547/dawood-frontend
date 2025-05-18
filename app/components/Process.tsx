@@ -311,7 +311,7 @@ export default function Process() {
               className="relative w-[320px] h-[380px] border-2 border-white rounded-[40%] overflow-hidden shadow-xl"
               style={{ borderRadius: "40% / 30%" }}
             >
-              <Image src="/OIP.jpeg" alt="Person in car" fill className="object-cover" />
+              <Image src="/process-about.jpg" alt="Person in car" fill className="object-cover" />
               <div
                 ref={starIconRef}
                 className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 text-indigo-900"

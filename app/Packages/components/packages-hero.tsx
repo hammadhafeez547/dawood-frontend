@@ -54,7 +54,7 @@ export default function PackagesHero() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-wrap justify-center gap-4"
           >
-            <Link href="/book-now">
+            <Link href="/Book">
               <Button className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-full">
                 Book Now
               </Button>

@@ -117,7 +117,7 @@ export default function PackagesFAQ() {
         >
           <p className="text-gray-600 mb-4">Still have questions? Contact our customer support team.</p>
           <a
-            href="/contact"
+            href="/Contact"
             className="inline-flex items-center text-orange-600 font-medium hover:text-orange-700 transition-colors"
           >
             Contact Us <span className="ml-1">→</span>

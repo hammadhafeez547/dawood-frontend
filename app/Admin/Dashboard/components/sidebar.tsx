@@ -134,6 +134,9 @@ const navItems = [
   { name: "Users", href: "/Admin/Dashboard/users", icon: Users, badge: "8" },
   { name: "Rides", href: "/Admin/Dashboard/rides", icon: Wallet },
   { name: "Fares", href: "/Admin/Dashboard/routes", icon: Wallet },
+    { name: "Routes", href: "/Admin/Dashboard/Web-routes", icon: Car },
+
+
 
   { name: "Cars", href: "/Admin/Dashboard/cars", icon: Car },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },

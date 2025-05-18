@@ -108,12 +108,12 @@ export default function AboutSection() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <Link href="/book-now">
+              <Link href="/Book">
                 <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md flex items-center gap-2 transition-all shadow-lg hover:shadow-xl">
                   Book Now <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/Contact">
                 <Button
                   variant="outline"
                   className="border-orange-500 text-orange-500 hover:bg-orange-50 px-6 py-2 rounded-md"

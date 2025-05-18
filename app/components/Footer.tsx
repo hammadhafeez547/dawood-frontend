@@ -72,7 +72,7 @@ export default function Footer() {
                   <span>123 Al Noor Street, Makkah, Saudi Arabia</span>
                 </li>
                 <li className="text-sm text-gray-400 hover:text-white transition-all">
-                  <Link href="/contact" className="inline-block hover:translate-x-1 transition-transform">
+                  <Link href="/Contact" className="inline-block hover:translate-x-1 transition-transform">
                     View All Locations
                   </Link>
                 </li>

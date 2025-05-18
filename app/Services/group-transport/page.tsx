@@ -44,12 +44,12 @@ export default function GroupTransportServices() {
               Safe, comfortable, and reliable transportation solutions for groups of all sizes in Saudi Arabia.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/book-now">
+              <Link href="/Book">
                 <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50">
                   Book Now
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/Contact">
                 <Button
                   variant="outline"
                   size="lg"
@@ -771,12 +771,12 @@ export default function GroupTransportServices() {
               Contact our team today to discuss your group transportation needs and receive a customized quote.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/book-now">
+              <Link href="/Book">
                 <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50">
                   Book Now
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/Contact">
                 <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
                   Contact Us
                 </Button>

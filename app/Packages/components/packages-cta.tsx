@@ -45,13 +45,13 @@ export default function PackagesCTA() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row justify-center gap-4 mb-10"
           >
-            <Link href="/book-now">
+            <Link href="/Book">
               <Button className="bg-white text-orange-600 hover:bg-gray-100 px-6 py-2 h-auto text-base">
                 <Calendar className="mr-2 h-5 w-5" />
                 Book Now
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href="/Contact">
               <Button
                 variant="outline"
                 className="border-white text-white bg-black hover:bg-white/10 px-6 py-2 h-auto text-base"

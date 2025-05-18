@@ -1,17 +1,27 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Asterisk, Car, Plane, UserCheck, MapPin, ChevronRight } from "lucide-react"
-import { motion } from "framer-motion"
-import { useState } from "react"
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  Asterisk,
+  Car,
+  Plane,
+  UserCheck,
+  MapPin,
+  ChevronRight,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import Link from "next/link";
 
 function ServicesSection() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const services = [
     {
       title: "Car Rental With Driver",
-      description: "Professional drivers with luxury vehicles for comfortable travel throughout your journey.",
+      description:
+        "Professional drivers with luxury vehicles for comfortable travel throughout your journey.",
       icon: <Car className="h-8 w-8" />,
       color: "bg-orange-50",
       accentColor: "bg-orange-500",
@@ -19,7 +29,8 @@ function ServicesSection() {
     },
     {
       title: "Airport Transfer",
-      description: "Reliable pickup and drop-off services at all major airports with flight tracking.",
+      description:
+        "Reliable pickup and drop-off services at all major airports with flight tracking.",
       icon: <Plane className="h-8 w-8" />,
       color: "bg-blue-50",
       accentColor: "bg-blue-500",
@@ -27,7 +38,8 @@ function ServicesSection() {
     },
     {
       title: "Chauffeur Services",
-      description: "Experienced chauffeurs for business meetings, special events, and VIP transportation.",
+      description:
+        "Experienced chauffeurs for business meetings, special events, and VIP transportation.",
       icon: <UserCheck className="h-8 w-8" />,
       color: "bg-green-50",
       accentColor: "bg-green-500",
@@ -35,13 +47,14 @@ function ServicesSection() {
     },
     {
       title: "City Tours",
-      description: "Guided tours of holy sites and attractions with knowledgeable local drivers.",
+      description:
+        "Guided tours of holy sites and attractions with knowledgeable local drivers.",
       icon: <MapPin className="h-8 w-8" />,
       color: "bg-purple-50",
       accentColor: "bg-purple-500",
       hoverColor: "group-hover:bg-purple-100",
     },
-  ]
+  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -51,7 +64,7 @@ function ServicesSection() {
         staggerChildren: 0.2,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -62,7 +75,7 @@ function ServicesSection() {
         duration: 0.5,
       },
     },
-  }
+  };
 
   return (
     <section className="py-20 bg-gradient-to-b from-amber-50 to-white relative overflow-hidden">
@@ -80,19 +93,23 @@ function ServicesSection() {
         >
           <div className="flex items-center gap-2 mb-4">
             <Asterisk className="w-6 h-6 text-orange-500" />
-            <span className="font-bold text-orange-500 uppercase tracking-wider text-sm">Our Services</span>
+            <span className="font-bold text-orange-500 uppercase tracking-wider text-sm">
+              Our Services
+            </span>
           </div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center max-w-3xl mb-6">
-            <span className="text-gray-900">Explore our wide range of rental</span>
+            <span className="text-gray-900">
+              Explore our wide range of rental
+            </span>
             <span className="text-orange-500 block md:inline"> Services</span>
           </h2>
 
           <div className="w-20 h-1 bg-orange-500 rounded-full mb-6"></div>
 
           <p className="text-gray-600 text-center max-w-2xl text-lg">
-            Premium transportation solutions for Umrah travelers, ensuring comfort and reliability throughout your
-            sacred journey.
+            Premium transportation solutions for Umrah travelers, ensuring
+            comfort and reliability throughout your sacred journey.
           </p>
         </motion.div>
 
@@ -112,26 +129,43 @@ function ServicesSection() {
               className={`group relative rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl ${service.color}`}
             >
               {/* Card background with hover effect */}
-              <div className={`absolute inset-0 transition-colors duration-300 ${service.hoverColor}`}></div>
+              <div
+                className={`absolute inset-0 transition-colors duration-300 ${service.hoverColor}`}
+              ></div>
 
               {/* Card content */}
               <div className="relative z-10 p-6 flex flex-col h-full">
                 {/* Icon container */}
-                <div className={`p-4 rounded-lg ${service.color} mb-5 inline-block`}>
+                <div
+                  className={`p-4 rounded-lg ${service.color} mb-5 inline-block`}
+                >
                   <div className="text-gray-800">{service.icon}</div>
                 </div>
 
-                <h3 className="text-xl font-bold mb-3 text-gray-900">{service.title}</h3>
+                <h3 className="text-xl font-bold mb-3 text-gray-900">
+                  {service.title}
+                </h3>
 
-                <p className="text-gray-600 mb-6 flex-grow">{service.description}</p>
+                <p className="text-gray-600 mb-6 flex-grow">
+                  {service.description}
+                </p>
 
                 {/* Arrow button */}
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-900">Learn more</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    Learn more
+                  </span>
                   <div
-                    className={`rounded-full p-2.5 transition-all duration-300 ${service.accentColor} text-white transform ${hoveredIndex === index ? "rotate-45" : "rotate-0"}`}
+                    className={`rounded-full p-2.5 transition-all duration-300 ${
+                      service.accentColor
+                    } text-white transform ${
+                      hoveredIndex === index ? "rotate-45" : "rotate-0"
+                    }`}
                   >
-                    <ChevronRight className="h-4 w-4" />
+                    <Link href={"/Services"}>
+                      
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
                   </div>
                 </div>
 
@@ -153,28 +187,35 @@ function ServicesSection() {
         >
           <div className="text-gray-600 max-w-2xl mx-auto">
             <p className="text-lg">
-              Discover our comprehensive range of transportation services designed to meet all your travel needs during
-              your sacred journey.
+              Discover our comprehensive range of transportation services
+              designed to meet all your travel needs during your sacred journey.
             </p>
-            <p className="text-lg mt-2">From luxury vehicles to experienced drivers familiar with holy sites.</p>
+            <p className="text-lg mt-2">
+              From luxury vehicles to experienced drivers familiar with holy
+              sites.
+            </p>
           </div>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 rounded-lg text-lg font-medium transition-all duration-300 hover:shadow-lg">
-              View All Services
-            </Button>
+            <Link href={"/Services"}>
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 rounded-lg text-lg font-medium transition-all duration-300 hover:shadow-lg">
+                View All Services
+              </Button>
+            </Link>
 
-            <Button
-              variant="outline"
-              className="border-orange-500 text-orange-500 hover:bg-orange-50 px-8 py-6 rounded-lg text-lg font-medium flex items-center gap-2 transition-all duration-300"
-            >
-              Contact Us <ArrowRight className="h-5 w-5" />
-            </Button>
+            <Link href={"/Contact"}>
+              <Button
+                variant="outline"
+                className="border-orange-500 text-orange-500 hover:bg-orange-50 px-8 py-6 rounded-lg text-lg font-medium flex items-center gap-2 transition-all duration-300"
+              >
+                Contact Us <ArrowRight className="h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
 
-export default ServicesSection
+export default ServicesSection;

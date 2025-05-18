@@ -267,7 +267,7 @@ export default function TaxiOptions() {
                   <div className="text-xs text-gray-500">per day</div>
                 </div>
 
-                <Link href="/book-now" className="block">
+                <Link href="/Book" className="block">
                   <button className="w-full bg-orange-500 text-white py-3 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center justify-center group-hover:shadow-md">
                     Book Now
                     <ChevronRight
@@ -331,7 +331,7 @@ export default function TaxiOptions() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          <Link href="/contact">
+          <Link href="/Contact">
             <button className="bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]">
               Contact Us for Custom Requirements
             </button>
