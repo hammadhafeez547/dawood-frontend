@@ -88,7 +88,7 @@ const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const fetchCars = async () => {
     try {
-      const res = await axios.get("https://dawood-backend.vercel.app/cars/all-cars");
+      const res = await axios.get("https://dawood-backend-five.vercel.app/cars/all-cars");
       setCars(res.data);
     } catch (error) {
       console.error(error);
@@ -127,12 +127,12 @@ formData.append("popular", newCar.popular.toString());
       if (editCarId) {
         console.log(formData);
 
-        await axios.put(`http://localhost:4000/cars/${editCarId}`, formData, {
+        await axios.put(`https://dawood-backend-five.vercel.app/cars/${editCarId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
         console.log(formData);
-        await axios.post("http://localhost:4000/cars/car-add", formData, {
+        await axios.post("https://dawood-backend-five.vercel.app/cars/car-add", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -168,7 +168,7 @@ formData.append("popular", newCar.popular.toString());
     if (!confirm("Are you sure you want to delete this car?")) return;
 
     try {
-      await axios.delete(`http://localhost:4000/cars/${id}`);
+      await axios.delete(`https://dawood-backend-five.vercel.app/cars/${id}`);
       fetchCars();
     } catch (error) {
       console.error(error);
@@ -226,7 +226,7 @@ formData.append("popular", newCar.popular.toString());
       const newStatus =
         selectedCar.isAvailable === "Available" ? "Booked" : "Available";
 
-      await axios.put(`https://dawood-backend.vercel.app//cars/${id}`, {
+      await axios.put(`https://dawood-backend-five.vercel.app//cars/${id}`, {
         isAvailable: newStatus,
       });
 
@@ -441,7 +441,7 @@ formData.append("popular", newCar.popular.toString());
                   <TableCell>
                     {car.imageUrl && (
                       <img
-                        src={`https://dawood-backend.vercel.app/${car.imageUrl}`}
+                        src={`https://dawood-backend-five.vercel.app/${car.imageUrl}`}
                         alt="Car"
                         className="w-20 h-12 object-cover rounded"
                       />
