@@ -36,7 +36,7 @@ export default function ServicesPage() {
       description:
         "Comfortable and reliable transportation services between the holy cities of Makkah and Madinah.",
       icon: <Car className="h-10 w-10 text-orange-500" />,
-      image: "/makkah-madinah.jpg",
+      image: "/r4.png",
       category: "transportation",
       featured: true,
     },
@@ -46,7 +46,7 @@ export default function ServicesPage() {
       description:
         "Efficient transport from Jeddah to the serene city of Madinah with experienced drivers.",
       icon: <Car className="h-10 w-10 text-orange-500" />,
-      image: "/jeddah-madinah.jpg",
+      image: "/r1.png",
       category: "transportation",
       featured: true,
     },
@@ -56,7 +56,7 @@ export default function ServicesPage() {
       description:
         "Quick and comfortable transport from Jeddah to the holy city of Makkah.",
       icon: <Car className="h-10 w-10 text-orange-500" />,
-      image: "/jeddah-makkah.jpg",
+      image: "/r2.png",
       category: "transportation",
       featured: true,
     },
@@ -66,7 +66,7 @@ export default function ServicesPage() {
       description:
         "Hotel-to-hotel transport between Madinah and Makkah for pilgrims seeking door-to-door service.",
       icon: <Car className="h-10 w-10 text-orange-500" />,
-      image: "/madinah-makkah-hotel.jpg",
+      image: "/r3.png",
       category: "transportation",
       featured: true,
     },

@@ -22,7 +22,7 @@ export default function Home() {
     <main className="relative overflow-x-hidden">
       {/* WhatsApp Button */}
       <Link
-        href="https://wa.me/1234567890?text=I'm%20interested%20in%20your%20Umrah%20services"
+        href="https://wa.me/?text=I'm%20interested%20in%20your%20Transport%20services"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 flex items-center justify-center"

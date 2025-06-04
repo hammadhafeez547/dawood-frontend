@@ -30,7 +30,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://dawood-backend.vercel.app//auth/login", {
+      const res = await fetch("http://localhost:4000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -98,7 +98,7 @@ export default function LoginPage() {
             )}
           </CardContent>
           <CardFooter>
-            <Button className="w-full" type="submit" disabled={loading}>
+            <Button className="w-full mt-4" type="submit" disabled={loading}>
               {loading ? "Logging in..." : "Log In"}
             </Button>
           </CardFooter>

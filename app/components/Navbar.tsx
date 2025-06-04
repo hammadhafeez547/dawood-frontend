@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Menu, X, Phone, Mail, Facebook, Twitter, Instagram, Youtube, MapPin, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -9,6 +10,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [logoLoaded, setLogoLoaded] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,8 +50,8 @@ export default function Navbar() {
 
   return (
     <div className="relative">
-      {/* Top Bar */}
-      <div className="bg-gradient-to-r from-orange-800 to-orange-700 text-white py-2.5 px-4 text-sm z-20">
+      {/* Top Contact Bar */}
+      <div className="bg-gradient-to-r from-orange-800 to-orange-700 text-white py-2.5 px-4 text-sm z-20 fixed top-0 left-0 right-0 shadow-md transition-all duration-300">
         <div className="container mx-auto">
           <div className="hidden sm:flex justify-between items-center">
             <div className="flex items-center space-x-8">
@@ -114,6 +116,7 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* Mobile Contact Info */}
           <div className="sm:hidden flex flex-col space-y-1.5">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-1.5">
@@ -150,27 +153,55 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Navbar */}
+      {/* Main Navbar */}
       <header
-        className={`sticky top-0 left-0 right-0 w-full z-30 bg-white shadow-md transition-all duration-300 ${
-          scrolled ? "py-2 shadow-lg" : "py-3"
-        }`}
-      >
-        <div className="container mx-auto px-4">
+  className={`fixed top-[48px] left-0 right-0 w-full z-30 bg-white transition-all duration-300 ${
+    scrolled ? "py-2 shadow-lg" : "py-1 shadow-md"
+  }`}
+>
+        <div className="container mx-auto px-3">
           <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center group">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-600 to-orange-400 flex items-center justify-center text-white font-bold text-xl mr-2 shadow-md group-hover:shadow-orange-300/50 transition-all duration-300 group-hover:scale-105">
-                DT
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-2xl bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                  Dawood Tours
-                </span>
-                <span className="text-xs text-gray-500 -mt-1">Premium Travel Services</span>
-              </div>
-            </Link>
+          {/* Professional Logo with Text */}
+<Link 
+  href="/" 
+  className="flex items-center group"
+  aria-label="Dawood Hajj Transport Home"
+>
+  {/* Logo Container with Smooth Loading */}
+  <div className={`relative transition-all duration-300 ${logoLoaded ? 'opacity-100' : 'opacity-0'}`}>
+    <Image
+      src="/logo.png"
+      alt="Dawood Hajj Transport Logo"
+      width={220}
+      height={100}
+      className="h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-200"
+      priority
+      onLoadingComplete={() => setLogoLoaded(true)}
+    />
+  </div>
+
+  {/* Text Logo (Desktop Only) */}
+  <div className="hidden md:block ml-3">
+    <h1 className="font-bold text-2xl bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+      Dawood <span className="font-normal">Transport</span>
+    </h1>
+    <p className="text-xs text-gray-500 tracking-wider">Premium Pilgrimage Services</p>
+  </div>
+
+  {/* Loading Placeholder */}
+  {!logoLoaded && (
+    <div className="absolute flex items-center space-x-3">
+      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-100 to-orange-200 animate-pulse"></div>
+      <div className="hidden md:block">
+        <div className="h-5 w-32 bg-gray-100 rounded-md animate-pulse"></div>
+        <div className="h-3 w-24 bg-gray-100 rounded-md animate-pulse mt-1"></div>
+      </div>
+    </div>
+  )}
+</Link>
 
             <div className="flex items-center gap-6">
+              {/* Desktop Navigation */}
               <nav className="hidden md:flex space-x-8">
                 <Link href="/" className="text-slate-700 hover:text-orange-600 font-medium relative py-1 group">
                   Home
@@ -181,7 +212,7 @@ export default function Navbar() {
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
 
-                {/* Services Dropdown */}
+                {/* Services Dropdown
                 <div className="relative group">
                   <button
                     onClick={() => toggleDropdown("services")}
@@ -238,77 +269,18 @@ export default function Navbar() {
                       >
                         Makkah to Madinah Transport
                       </Link>
-                      <Link
-                        href="/services/umrah-transportation"
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        Umrah Transportation
-                      </Link>
                     </div>
                   </div>
-                </div>
 
-                {/* Vehicles Dropdown */}
-                <div className="relative group">
-                  <button
-                    onClick={() => toggleDropdown("vehicles")}
-                    className={`text-slate-700 hover:text-orange-600 font-medium relative py-1 group flex items-center ${
-                      activeDropdown === "vehicles" ? "text-orange-600" : ""
-                    }`}
-                  >
-                    Our Vehicles
-                    <ChevronDown
-                      className={`ml-1 h-4 w-4 transition-transform ${
-                        activeDropdown === "vehicles" ? "rotate-180 text-orange-600" : ""
-                      }`}
-                    />
-                    <span
-                      className={`absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 ${
-                        activeDropdown === "vehicles" ? "w-full" : "group-hover:w-full"
-                      }`}
-                    ></span>
-                  </button>
-
-                  <div
-                    className={`absolute top-full left-0 mt-1 w-64 bg-white rounded-md shadow-lg overflow-hidden transition-all duration-200 ${
-                      activeDropdown === "vehicles"
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 -translate-y-2 pointer-events-none"
-                    }`}
-                  >
-                    <div className="py-2">
-                      <Link
-                        href="/OurVehicles"
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        All Vehicles
-                      </Link>
-                      <Link
-                        href="/vehicles/luxury-sedans"
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        Luxury Sedans
-                      </Link>
-                      <Link
-                        href="/vehicles/suvs"
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        SUVs
-                      </Link>
-                      <Link
-                        href="/vehicles/buses"
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        Buses
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                </div> */}
+                   <Link href="/Services" className="text-slate-700 hover:text-orange-600 font-medium relative py-1 group">
+                  Services
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+                <Link href="/OurVehicles" className="text-slate-700 hover:text-orange-600 font-medium relative py-1 group">
+                  Our Vehicles
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
 
                 <Link href="/Contact" className="text-slate-700 hover:text-orange-600 font-medium relative py-1 group">
                   Contact
@@ -325,6 +297,7 @@ export default function Navbar() {
               </div>
             </div>
 
+            {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button
                 type="button"
@@ -354,15 +327,13 @@ export default function Navbar() {
         >
           <div className="flex justify-between items-center p-4 border-b border-gray-100">
             <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-600 to-orange-400 flex items-center justify-center text-white font-bold text-sm mr-2">
-                DT
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-xl bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                  Dawood Tours
-                </span>
-                <span className="text-[10px] text-gray-500 -mt-1">Premium Travel Services</span>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Dawood Hajj Transport"
+                width={140}
+                height={50}
+                className="h-10 w-auto object-contain"
+              />
             </div>
             <button
               type="button"
@@ -391,54 +362,53 @@ export default function Navbar() {
             </Link>
 
             {/* Mobile Services Dropdown */}
-            <Link
+            {/* <div className="block px-3 py-3 rounded-md text-base font-medium text-slate-700">
+              <div className="flex items-center justify-between" onClick={() => toggleDropdown("mobile-services")}>
+                <span>Services</span>
+                <ChevronDown
+                  className={`h-5 w-5 transition-transform ${activeDropdown === "mobile-services" ? "rotate-180" : ""}`}
+                />
+              </div>
+
+              <div className={`mt-2 ml-2 space-y-1 ${activeDropdown === "mobile-services" ? "block" : "hidden"}`}>
+                <Link
+                  href="/Services"
+                  className="block px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  All Services
+                </Link>
+                <Link
+                  href="/services/hajj-packages"
+                  className="block px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Hajj Packages
+                </Link>
+                <Link
+                  href="/services/umrah-packages"
+                  className="block px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Umrah Packages
+                </Link>
+              </div>
+            </div> */}
+             <Link
               href="/Services"
               className="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
               onClick={() => setIsMenuOpen(false)}
             >
-              Service
+              Services
+            </Link>
+            <Link
+              href="/OurVehicles"
+              className="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Our Vehicles
             </Link>
 
-            {/* Mobile Vehicles Dropdown */}
-            <div className="block px-3 py-3 rounded-md text-base font-medium text-slate-700">
-              <div className="flex items-center justify-between" onClick={() => toggleDropdown("mobile-vehicles")}>
-                <span>Our Vehicles</span>
-                <ChevronDown
-                  className={`h-5 w-5 transition-transform ${activeDropdown === "mobile-vehicles" ? "rotate-180" : ""}`}
-                />
-              </div>
-
-              <div className={`mt-2 ml-2 space-y-1 ${activeDropdown === "mobile-vehicles" ? "block" : "hidden"}`}>
-                <Link
-                  href="/vehicles"
-                  className="block px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  All Vehicles
-                </Link>
-                <Link
-                  href="/vehicles/luxury-sedans"
-                  className="block px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Luxury Sedans
-                </Link>
-                <Link
-                  href="/vehicles/suvs"
-                  className="block px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  SUVs
-                </Link>
-                <Link
-                  href="/vehicles/buses"
-                  className="block px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Buses
-                </Link>
-              </div>
-            </div>
 
             <Link
               href="/Contact"
@@ -471,12 +441,6 @@ export default function Navbar() {
                   </div>
                   <span>DiamondDawood@gmail.com</span>
                 </div>
-                <div className="flex items-center space-x-3 text-sm text-gray-600">
-                  <div className="bg-orange-100 p-1.5 rounded-full">
-                    <MapPin className="h-4 w-4 text-orange-600" />
-                  </div>
-                  <span>Saudi Arabia</span>
-                </div>
               </div>
 
               <div className="flex items-center space-x-4 mt-4 pt-4 border-t border-gray-100">
@@ -486,13 +450,6 @@ export default function Navbar() {
                   className="bg-gray-100 p-2 rounded-full text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition-colors duration-200"
                 >
                   <Facebook className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="https://twitter.com"
-                  aria-label="Twitter"
-                  className="bg-gray-100 p-2 rounded-full text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition-colors duration-200"
-                >
-                  <Twitter className="h-4 w-4" />
                 </Link>
                 <Link
                   href="https://instagram.com"
@@ -514,9 +471,9 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* WhatsApp Button */}
-     <Link
-        href="https://wa.me/966580563933?text=Hello%20Dawood%20Tours,%20I'm%20interested%20in%20your%20services"
+      {/* WhatsApp Floating Button */}
+      <Link
+        href="https://wa.me/966580563933?text=Hello%20Dawood%20Hajj%20Transport,%20I'm%20interested%20in%20your%20services"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 flex items-center justify-center"

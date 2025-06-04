@@ -412,7 +412,7 @@ export default function ServiceDetails() {
                   >
                     <div className="relative h-80 w-full">
                       <Image
-                        src="/placeholder.svg?height=600&width=1200"
+                        src="/about.jpg?height=600&width=1200"
                         alt="Makkah to Madinah Transportation"
                         fill
                         className="object-cover"
@@ -500,7 +500,7 @@ export default function ServiceDetails() {
                         </p>
                         <div className="relative h-64 w-full rounded-lg overflow-hidden mt-4">
                           <Image
-                            src="/placeholder.svg?height=400&width=800"
+                            src="/jouney.jpg?height=400&width=800"
                             alt="Journey Map"
                             fill
                             className="object-cover"

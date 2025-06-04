@@ -1,7 +1,7 @@
 "use client"
 
 import { useSidebar } from "./sidebar-provider"
-import { Bell, Search, User, Menu } from "lucide-react"
+import { Bell, Search, User, Menu, Link } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
@@ -59,8 +59,9 @@ export function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem><div><Link href="/Admin/Dashboard/settings/profile">Profile</Link></div></DropdownMenuItem>
+           
+            <DropdownMenuItem><div><Link href="/Admin/Dashboard/settings">Settings</Link></div> </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>

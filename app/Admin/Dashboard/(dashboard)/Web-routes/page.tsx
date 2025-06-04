@@ -84,7 +84,7 @@ export default function Page() {
 
   const fetchRoutes = async () => {
     try {
-      const res = await axios.get("https://dawood-backend.vercel.app/routes/all-routes");
+      const res = await axios.get("http://localhost:4000/routes/all-routes");
       setRoutes(res.data);
     } catch (error) {
       console.error(error);
@@ -118,11 +118,11 @@ export default function Page() {
       }
 
       if (editRouteId) {
-        await axios.put(`https://dawood-backend.vercel.app/routes/${editRouteId}`, formData, {
+        await axios.put(`http://localhost:4000/routes/${editRouteId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        await axios.post("https://dawood-backend.vercel.app/routes/route-add", formData, {
+        await axios.post("http://localhost:4000/routes/route-add", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -142,7 +142,7 @@ export default function Page() {
     if (!confirm("Are you sure you want to delete this route?")) return;
 
     try {
-      await axios.delete(`https://dawood-backend.vercel.app/routes/${id}`);
+      await axios.delete(`http://localhost:4000/routes/${id}`);
       fetchRoutes();
     } catch (error) {
       console.error(error);

@@ -104,95 +104,131 @@
 // export default TaxiRoutes
 "use client"
 
+
+import axios from "axios"
+import { useEffect } from "react"
 import { useState } from "react"
 import { MapPin, Clock, ArrowRight, Star, TrendingUp, Car, DollarSign, Plane, Landmark } from 'lucide-react'
 import { motion } from "framer-motion"
+import Link from "next/link"
+interface Route {
+  id: number;
+  name: string;
+  distance: string;
+  duration: string;
+  stops: string[];
+  description: string;
+  image: string;
+  price: string;
+  category : string;
+
+  vehicle : string ;
+  popular?: boolean;
+  features: string[];
+}
 
 function TaxiRoutes() {
-  const [activeTab, setActiveTab] = useState("popular")
 
-  const routes = [
-    { 
-      value: "jeddah-makkah", 
-      label: "Jeddah Airport → Makkah", 
-      popular: true,
-      category: "airport",
-      distance: "80 km",
-      time: "1h 15m",
-      price: "SAR 150",
-      vehicle: "Sedan"
-    },
-    { 
-      value: "makkah-jeddah", 
-      label: "Makkah → Jeddah Airport", 
-      popular: true,
-      category: "airport",
-      distance: "80 km",
-      time: "1h 15m",
-      price: "SAR 150",
-      vehicle: "Sedan"
-    },
-    { 
-      value: "makkah-madina", 
-      label: "Makkah → Madina", 
-      popular: true,
-      category: "intercity",
-      distance: "450 km",
-      time: "4h 30m",
-      price: "SAR 600",
-      vehicle: "SUV"
-    },
-    { 
-      value: "madina-makkah", 
-      label: "Madina → Makkah", 
-      popular: true,
-      category: "intercity",
-      distance: "450 km",
-      time: "4h 30m",
-      price: "SAR 600",
-      vehicle: "SUV"
-    },
-    { 
-      value: "jeddah-madina", 
-      label: "Jeddah Airport → Madina", 
-      popular: false,
-      category: "airport",
-      distance: "420 km",
-      time: "4h",
-      price: "SAR 550",
-      vehicle: "SUV"
-    },
-    { 
-      value: "madina-jeddah", 
-      label: "Madina → Jeddah Airport", 
-      popular: false,
-      category: "airport",
-      distance: "420 km",
-      time: "4h",
-      price: "SAR 550",
-      vehicle: "SUV"
-    },
-    { 
-      value: "hotel-makkah", 
-      label: "Hotel → Makkah Ziyarat", 
-      popular: false,
-      category: "ziyarat",
-      distance: "Varies",
-      time: "3-5h",
-      price: "SAR 300",
-      vehicle: "Van"
-    },
-    { 
-      value: "hotel-madina", 
-      label: "Hotel → Madina Ziyarat", 
-      popular: false,
-      category: "ziyarat",
-      distance: "Varies",
-      time: "3-5h",
-      price: "SAR 300",
-      vehicle: "Van"
-    },
-  ]
+  const [activeTab, setActiveTab] = useState("popular")
+  const [routes, setRoutes] = useState<Route[]>([]);
+    const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchRoutes();
+  }, []);
+
+  const fetchRoutes = async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/routes/all-routes");
+      setRoutes(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to fetch cars");        
+    }
+  };
+
+  // const routes = [
+  //   { 
+  //     value: "jeddah-makkah", 
+  //     label: "Jeddah Airport → Makkah", 
+  //     popular: true,
+  //     category: "airport",
+  //     distance: "80 km",
+  //     time: "1h 15m",
+  //     price: "SAR 150",
+  //     vehicle: "Sedan"
+  //   },
+  //   { 
+  //     value: "makkah-jeddah", 
+  //     label: "Makkah → Jeddah Airport", 
+  //     popular: true,
+  //     category: "airport",
+  //     distance: "80 km",
+  //     time: "1h 15m",
+  //     price: "SAR 150",
+  //     vehicle: "Sedan"
+  //   },
+  //   { 
+  //     value: "makkah-madina", 
+  //     label: "Makkah → Madina", 
+  //     popular: true,
+  //     category: "intercity",
+  //     distance: "450 km",
+  //     time: "4h 30m",
+  //     price: "SAR 600",
+  //     vehicle: "SUV"
+  //   },
+  //   { 
+  //     value: "madina-makkah", 
+  //     label: "Madina → Makkah", 
+  //     popular: true,
+  //     category: "intercity",
+  //     distance: "450 km",
+  //     time: "4h 30m",
+  //     price: "SAR 600",
+  //     vehicle: "SUV"
+  //   },
+  //   { 
+  //     value: "jeddah-madina", 
+  //     label: "Jeddah Airport → Madina", 
+  //     popular: false,
+  //     category: "airport",
+  //     distance: "420 km",
+  //     time: "4h",
+  //     price: "SAR 550",
+  //     vehicle: "SUV"
+  //   },
+  //   { 
+  //     value: "madina-jeddah", 
+  //     label: "Madina → Jeddah Airport", 
+  //     popular: false,
+  //     category: "airport",
+  //     distance: "420 km",
+  //     time: "4h",
+  //     price: "SAR 550",
+  //     vehicle: "SUV"
+  //   },
+  //   { 
+  //     value: "hotel-makkah", 
+  //     label: "Hotel → Makkah Ziyarat", 
+  //     popular: false,
+  //     category: "ziyarat",
+  //     distance: "Varies",
+  //     time: "3-5h",
+  //     price: "SAR 300",
+  //     vehicle: "Van"
+  //   },
+  //   { 
+  //     value: "hotel-madina", 
+  //     label: "Hotel → Madina Ziyarat", 
+  //     popular: false,
+  //     category: "ziyarat",
+  //     distance: "Varies",
+  //     time: "3-5h",
+  //     price: "SAR 300",
+  //     vehicle: "Van"
+  //   },
+  // ]
 
   const filteredRoutes = routes.filter(route => {
     if (activeTab === "popular") return route.popular;
@@ -327,11 +363,11 @@ function TaxiRoutes() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-orange-500 transition-colors">
-                        {route.label}
+                        {route.name}
                       </h3>
                       <div className="flex items-center gap-3 text-sm text-gray-500">
                         <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> {route.time}
+                          <Clock className="w-3 h-3" /> {route.duration}
                         </span>
                         <span className="flex items-center gap-1">
                           <ArrowRight className="w-3 h-3" /> {route.distance}
@@ -365,10 +401,12 @@ function TaxiRoutes() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-12 text-center"
           >
-            <button className="bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-3 rounded-full shadow-md transition-all duration-300 flex items-center gap-2 mx-auto hover:translate-y-[-2px]">
+          <Link href={"/Routes"}>
+          <button className="bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-3 rounded-full shadow-md transition-all duration-300 flex items-center gap-2 mx-auto hover:translate-y-[-2px]">
               <span>View All Routes</span>
               <ArrowRight className="w-4 h-4" />
             </button>
+          </Link>
             <p className="text-gray-500 text-sm mt-4">
               Custom routes and special arrangements available upon request
             </p>
