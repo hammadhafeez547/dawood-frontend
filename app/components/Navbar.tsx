@@ -49,13 +49,13 @@ export default function Navbar() {
   }
 
   return (
-    <div className="relative">
-      {/* Top Contact Bar */}
-      <div className="bg-gradient-to-r from-orange-800 to-orange-700 text-white py-2.5 px-4 text-sm z-20 fixed top-0 left-0 right-0 shadow-md transition-all duration-300">
+   <div className="relative pt-[120px]">
+      {/* Top Bar */}
+      <div className="fixed top-0 left-0 right-0 w-full bg-gradient-to-r from-orange-800 to-orange-700 text-white py-2.5 px-4 text-sm z-40">
         <div className="container mx-auto">
           <div className="hidden sm:flex justify-between items-center">
             <div className="flex items-center space-x-8">
-              <div className="flex items-center space-x-2 group">
+              <div className="flex items-center space-x-2 group text-[12px]">
                 <div className="bg-orange-700 bg-opacity-50 rounded-full p-1.5 group-hover:bg-orange-600 transition-all duration-300">
                   <Phone className="h-3.5 w-3.5 text-orange-100" />
                 </div>
@@ -116,7 +116,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Contact Info */}
           <div className="sm:hidden flex flex-col space-y-1.5">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-1.5">
@@ -153,12 +152,12 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Main Navbar */}
+      {/* Navbar */}
       <header
-  className={`fixed top-[48px] left-0 right-0 w-full z-30 bg-white transition-all duration-300 ${
-    scrolled ? "py-2 shadow-lg" : "py-1 shadow-md"
-  }`}
->
+        className={`fixed top-[48px] left-0 right-0 w-full z-30 bg-white shadow-md transition-all duration-300 ${
+          scrolled ? "py-2 shadow-lg" : "py-2"
+        }`}
+      >
         <div className="container mx-auto px-3">
           <div className="flex justify-between items-center">
           {/* Professional Logo with Text */}
