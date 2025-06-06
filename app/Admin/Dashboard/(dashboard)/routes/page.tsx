@@ -40,7 +40,7 @@ export default function CarFareManager() {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await fetch("https://dawood-backend-oxho.vercel.app/all-cars");
+        const res = await fetch("https://dawood-backend-five.vercel.app/all-cars");
         const data: Car[] = await res.json();
         setCarsList(data);
       } catch (error) {
@@ -54,7 +54,7 @@ export default function CarFareManager() {
   const fetchFares = async (carId: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`https://dawood-backend-oxho.vercel.app/fare/${carId}`);
+      const res = await fetch(`https://dawood-backend-five.vercel.app/fare/${carId}`);
       const data: Route[] = await res.json();
       setCarFares((prev) => ({ ...prev, [carId]: data }));
     } catch (error) {
@@ -72,7 +72,7 @@ export default function CarFareManager() {
 
   const handleFareUpdate = async (fareId: string, newFare: number) => {
     try {
-      await fetch(`https://dawood-backend-oxho.vercel.app/fare/${fareId}`, {
+      await fetch(`https://dawood-backend-five.vercel.app/fare/${fareId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fare: newFare }),
@@ -88,7 +88,7 @@ export default function CarFareManager() {
     if (!from || !to || !fare) return;
 
     try {
-      await fetch("https://dawood-backend-oxho.vercel.app//fare/", {
+      await fetch("https://dawood-backend-five.vercel.app//fare/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -140,7 +140,7 @@ export default function CarFareManager() {
           <CardHeader onClick={() => handleToggle(car._id)} className="cursor-pointer">
             <CardTitle className="flex items-center gap-2">
               <img
-                src={`https://dawood-backend-oxho.vercel.app/${car.imageUrl}`}
+                src={`https://dawood-backend-five.vercel.app/${car.imageUrl}`}
                 alt="Car"
                 className="w-20 h-12 object-cover rounded"
               />

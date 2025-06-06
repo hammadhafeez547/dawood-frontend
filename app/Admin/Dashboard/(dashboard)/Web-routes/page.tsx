@@ -84,7 +84,7 @@ export default function Page() {
 
   const fetchRoutes = async () => {
     try {
-      const res = await axios.get("https://dawood-backend-oxho.vercel.app/routes/all-routes");
+      const res = await axios.get("https://dawood-backend-five.vercel.app/routes/all-routes");
       setRoutes(res.data);
     } catch (error) {
       console.error(error);
@@ -118,11 +118,11 @@ export default function Page() {
       }
 
       if (editRouteId) {
-        await axios.put(`https://dawood-backend-oxho.vercel.app/routes/${editRouteId}`, formData, {
+        await axios.put(`https://dawood-backend-five.vercel.app/routes/${editRouteId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        await axios.post("https://dawood-backend-oxho.vercel.app/routes/route-add", formData, {
+        await axios.post("https://dawood-backend-five.vercel.app/routes/route-add", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -142,7 +142,7 @@ export default function Page() {
     if (!confirm("Are you sure you want to delete this route?")) return;
 
     try {
-      await axios.delete(`https://dawood-backend-oxho.vercel.app/routes/${id}`);
+      await axios.delete(`https://dawood-backend-five.vercel.app/routes/${id}`);
       fetchRoutes();
     } catch (error) {
       console.error(error);
@@ -163,7 +163,7 @@ export default function Page() {
       category: route.category,
       imageUrl: route.imageUrl,
     });
-    setPreview(route.imageUrl ? `https://dawood-backend-oxho.vercel.app/${route.imageUrl}` : null);
+    setPreview(route.imageUrl ? `https://dawood-backend-five.vercel.app/${route.imageUrl}` : null);
     setEditRouteId(route._id);
     setDialogOpen(true);
   };
@@ -195,7 +195,7 @@ export default function Page() {
 
       const newStatus = !selectedRoute.isActive;
 
-      await axios.put(`https://dawood-backend-oxho.vercel.app/routes/${id}`, {
+      await axios.put(`https://dawood-backend-five.vercel.app/routes/${id}`, {
         isActive: newStatus,
       });
 
@@ -458,7 +458,7 @@ export default function Page() {
                   <TableCell>
                     {route.imageUrl && (
                       <img
-                        src={`https://dawood-backend-oxho.vercel.app/${route.imageUrl}`}
+                        src={`https://dawood-backend-five.vercel.app/${route.imageUrl}`}
                         alt={route.name}
                         className="w-20 h-12 object-cover rounded"
                       />

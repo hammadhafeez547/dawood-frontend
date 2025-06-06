@@ -139,7 +139,7 @@ function TaxiRoutes() {
 
   const fetchRoutes = async () => {
     try {
-      const res = await axios.get("https://dawood-backend-oxho.vercel.app/routes/all-routes");
+      const res = await axios.get("https://dawood-backend-five.vercel.app/routes/all-routes");
       setRoutes(res.data);
     } catch (error) {
       console.error(error);
