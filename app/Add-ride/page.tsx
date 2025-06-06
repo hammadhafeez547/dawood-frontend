@@ -26,7 +26,7 @@ export default function AddRidePage() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch("https://dawood-backend-five.vercel.app/ride/", {
+      const response = await fetch("https://dawood-backend-oxho.vercel.app/ride/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
