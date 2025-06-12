@@ -271,7 +271,7 @@ export default function Navbar() {
       </header>
 
       {/* WhatsApp Floating Button */}
-      <Link
+      {/* <Link
         href="https://wa.me/966580563933"
         target="_blank"
         rel="noopener noreferrer"
@@ -285,7 +285,7 @@ export default function Navbar() {
             </svg>
           </div>
         </div>
-      </Link>
+      </Link> */}
     </div>
   )
 }

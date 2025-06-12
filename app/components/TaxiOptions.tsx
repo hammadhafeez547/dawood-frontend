@@ -228,7 +228,7 @@ export default function TaxiOptions() {
                 {/* Vehicle image */}
                 <div className="absolute inset-0 flex items-center justify-center transform transition-transform duration-500 group-hover:scale-110">
                   <Image
-                    src={vehicle.image || "/placeholder.svg?height=200&width=300"}
+                    src={vehicle.imageUrl || "/placeholder.svg?height=200&width=300"}
                     alt={vehicle.name}
                     width={300}
                     height={200}
@@ -254,7 +254,7 @@ export default function TaxiOptions() {
                     <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
                       <Users size={16} className="text-orange-500" />
                     </div>
-                    <span className="text-gray-700 font-medium">{vehicle.people} Passengers</span>
+                    <span className="text-gray-700 font-medium">{vehicle.passengers} Passengers</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
