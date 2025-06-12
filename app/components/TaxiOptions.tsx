@@ -2,13 +2,29 @@
 
 import Image from "next/image"
 import { Users, Briefcase, ChevronRight, Star, Shield, Clock } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import axios from "axios"
 
 export default function TaxiOptions() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+   useEffect(() => {
+      fetchCars();
+    }, []);
+  
+    const fetchCars = async () => {
+      try {
+        const res = await axios.get("https://dawood-backend-five.vercel.app/cars/all-cars");
+        setCars(res.data);
+      } catch (error) {
+        console.error(error);
+        alert("Failed to fetch cars");
+      }
+    };
+  const [cars, setCars] = useState<any[]>([]);
+
 
   const vehicles = [
     {
@@ -94,7 +110,7 @@ export default function TaxiOptions() {
   ]
 
   const filteredVehicles =
-    selectedCategory === "all" ? vehicles : vehicles.filter((vehicle) => vehicle.category === selectedCategory)
+    selectedCategory === "all" ? cars : cars.filter((vehicle) => vehicle.category === selectedCategory)
 
   const categories = [
     { id: "all", name: "All Vehicles" },
@@ -251,14 +267,14 @@ export default function TaxiOptions() {
                 {/* Features */}
                 <div className="mb-5">
                   <div className="flex flex-wrap gap-2">
-                    {vehicle.features.map((feature, index) => (
+                    {/* {cars.features.map((feature, index) => (
                       <span
                         key={index}
                         className="inline-flex items-center text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded"
                       >
                         {feature}
                       </span>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
 
