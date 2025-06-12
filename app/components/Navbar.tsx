@@ -300,7 +300,7 @@ export default function Navbar() {
             <div className="md:hidden">
               <button
                 type="button"
-                className="menu-button p-2 rounded-md text-orange-600 hover:bg-orange-50"
+                className="menu-button p-4 rounded-md text-orange-600 hover:bg-orange-50"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle menu"
               >
@@ -324,7 +324,7 @@ export default function Navbar() {
             isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="flex justify-between items-center p-4 border-b border-gray-100">
+          <div className="flex justify-between items-center p-4 pt-6 border-b border-gray-100">
             <div className="flex items-center">
               <Image
                 src="/logo.png"
