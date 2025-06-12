@@ -136,9 +136,9 @@ export default function Navbar() {
             <nav className="hidden lg:flex items-center space-x-1">
               {[
                 { href: "/", label: "Home", icon: <Home className="h-4 w-4" /> },
-                { href: "/about", label: "About", icon: <Info className="h-4 w-4" /> },
+                { href: "/About", label: "About", icon: <Info className="h-4 w-4" /> },
                 { 
-                  href: "/services", 
+                  href: "/Services", 
                   label: "Services", 
                   icon: <Settings className="h-4 w-4" />,
                   // dropdown: [
@@ -147,8 +147,8 @@ export default function Navbar() {
                   //   { href: "/services/transport", label: "City Transport", icon: <Car className="h-4 w-4" /> }
                   // ]
                 },
-                { href: "/vehicles", label: "Our Fleet", icon: <Car className="h-4 w-4" /> },
-                { href: "/contact", label: "Contact", icon: <Phone className="h-4 w-4" /> }
+                { href: "/OurVehicles", label: "Our Fleet", icon: <Car className="h-4 w-4" /> },
+                { href: "/Contact", label: "Contact", icon: <Phone className="h-4 w-4" /> }
               ].map((item) => (
                 <div key={item.label} className="relative group">
                 
@@ -164,7 +164,7 @@ export default function Navbar() {
               ))}
               
               <div className="ml-4">
-                <Link href="/book-now">
+                <Link href="/Book">
                   <Button className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-all flex items-center">
                     <Calendar className="h-4 w-4 mr-2" />
                     Book Now
@@ -202,15 +202,15 @@ export default function Navbar() {
             <div className="h-[calc(100vh-120px)] overflow-y-auto py-4 px-2">
               {[
                 { href: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-                { href: "/about", label: "About", icon: <Info className="h-5 w-5" /> },
+                { href: "/About", label: "About", icon: <Info className="h-5 w-5" /> },
                 { 
-                  href: "/services", 
+                  href: "/Services", 
                   label: "Services", 
                   icon: <Settings className="h-5 w-5" />,
                  
                 },
-                { href: "/vehicles", label: "Our Fleet", icon: <Car className="h-5 w-5" /> },
-                { href: "/contact", label: "Contact", icon: <Phone className="h-5 w-5" /> }
+                { href: "/OurVehicles", label: "Our Fleet", icon: <Car className="h-5 w-5" /> },
+                { href: "/Contact", label: "Contact", icon: <Phone className="h-5 w-5" /> }
               ].map((item) => (
                 <div key={item.label} className="mb-1">
                   {
@@ -227,7 +227,7 @@ export default function Navbar() {
               ))}
               
               <div className="mt-6 px-4">
-                <Link href="/book-now" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/Book" onClick={() => setIsMenuOpen(false)}>
                   <Button className="w-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white py-3 rounded-lg shadow-md transition-all">
                     Book Transportation
                   </Button>
