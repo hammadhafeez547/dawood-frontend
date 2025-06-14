@@ -10,104 +10,111 @@ import axios from "axios"
 export default function TaxiOptions() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+    const [cars, setCars] = useState<any[]>([]);
+
    useEffect(() => {
       fetchCars();
+        
+
     }, []);
   
     const fetchCars = async () => {
       try {
         const res = await axios.get("https://dawood-backend-five.vercel.app/cars/all-cars");
+              console.log("Cars loaded:", res.data);
+
         setCars(res.data);
+        console.log(cars);
+        
       } catch (error) {
         console.error(error);
         alert("Failed to fetch cars");
       }
     };
-  const [cars, setCars] = useState<any[]>([]);
 
 
-  const vehicles = [
-    {
-      id: 1,
-      name: "Sonata",
-      image: "/1.png",
-      people: 3,
-      luggage: "3 Luggage",
-      category: "sedan",
-      rating: 4.8,
-      features: ["Air Conditioning", "Free WiFi", "Bottled Water"],
-      price: "SAR 150",
-      popular: true,
-    },
-    {
-      id: 2,
-      name: "Hiace",
-      image: "/2.png",
-      people: 11,
-      luggage: "15 luggage",
-      category: "van",
-      rating: 4.7,
-      features: ["Air Conditioning", "Free WiFi", "Spacious"],
-      price: "SAR 350",
-      popular: true,
-    },
-    {
-      id: 3,
-      name: "GMC Yukon XL",
-      image: "/3.png",
-      people: 7,
-      luggage: "7 Luggage",
-      category: "suv",
-      rating: 4.9,
-      features: ["Premium Interior", "Free WiFi", "Refreshments"],
-      price: "SAR 450",
-      popular: true,
-    },
-    {
-      id: 4,
-      name: "H1 Hyundai",
-      image: "/7.png",
-      people: 4,
-      luggage: "3 Luggage",
-      category: "van",
-      rating: 4.6,
-      features: ["Air Conditioning", "Free WiFi", "Comfortable Seating"],
-      price: "SAR 250",
-    },
-    {
-      id: 5,
-      name: "Camry",
-      image: "/4.png",
-      people: 3,
-      luggage: "3 Luggage",
-      category: "sedan",
-      rating: 4.7,
-      features: ["Air Conditioning", "Free WiFi", "Bottled Water"],
-      price: "SAR 140",
-    },
-    {
-      id: 6,
-      name: "Coaster",
-      image: "/5.png",
-      people: 15,
-      luggage: "20 Luggage",
-      category: "bus",
-      rating: 4.8,
-      features: ["Air Conditioning", "Free WiFi", "Large Storage"],
-      price: "SAR 550",
-    },
-    {
-      id: 7,
-      name: "Staria",
-      image: "/6.png",
-      people: 7,
-      luggage: "7 Luggage",
-      category: "van",
-      rating: 4.8,
-      features: ["Premium Interior", "Free WiFi", "USB Charging"],
-      price: "SAR 350",
-    },
-  ]
+  // const vehicles = [
+  //   {
+  //     id: 1,
+  //     name: "Sonata",
+  //     image: "/1.png",
+  //     people: 3,
+  //     luggage: "3 Luggage",
+  //     category: "sedan",
+  //     rating: 4.8,
+  //     features: ["Air Conditioning", "Free WiFi", "Bottled Water"],
+  //     price: "SAR 150",
+  //     popular: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Hiace",
+  //     image: "/2.png",
+  //     people: 11,
+  //     luggage: "15 luggage",
+  //     category: "van",
+  //     rating: 4.7,
+  //     features: ["Air Conditioning", "Free WiFi", "Spacious"],
+  //     price: "SAR 350",
+  //     popular: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "GMC Yukon XL",
+  //     image: "/3.png",
+  //     people: 7,
+  //     luggage: "7 Luggage",
+  //     category: "suv",
+  //     rating: 4.9,
+  //     features: ["Premium Interior", "Free WiFi", "Refreshments"],
+  //     price: "SAR 450",
+  //     popular: true,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "H1 Hyundai",
+  //     image: "/7.png",
+  //     people: 4,
+  //     luggage: "3 Luggage",
+  //     category: "van",
+  //     rating: 4.6,
+  //     features: ["Air Conditioning", "Free WiFi", "Comfortable Seating"],
+  //     price: "SAR 250",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Camry",
+  //     image: "/4.png",
+  //     people: 3,
+  //     luggage: "3 Luggage",
+  //     category: "sedan",
+  //     rating: 4.7,
+  //     features: ["Air Conditioning", "Free WiFi", "Bottled Water"],
+  //     price: "SAR 140",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Coaster",
+  //     image: "/5.png",
+  //     people: 15,
+  //     luggage: "20 Luggage",
+  //     category: "bus",
+  //     rating: 4.8,
+  //     features: ["Air Conditioning", "Free WiFi", "Large Storage"],
+  //     price: "SAR 550",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Staria",
+  //     image: "/6.png",
+  //     people: 7,
+  //     luggage: "7 Luggage",
+  //     category: "van",
+  //     rating: 4.8,
+  //     features: ["Premium Interior", "Free WiFi", "USB Charging"],
+  //     price: "SAR 350",
+  //   },
+  // ]
 
   const filteredVehicles =
     selectedCategory === "all" ? cars : cars.filter((vehicle) => vehicle.category === selectedCategory)

@@ -105,6 +105,7 @@ const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
     try {
       setLoading(true);
+      console.log("Submitting car data:", newCar);
 
       const formData = new FormData();
       formData.append("name", newCar.name);
@@ -120,18 +121,25 @@ formData.append("popular", newCar.popular.toString());
       formData.append("passengers", newCar.passengers);
       formData.append("description", newCar.description);
 
-      if (newCar.imageUrl && typeof newCar.imageUrl !== "string") {
-        formData.append("image", newCar.imageUrl);
-      }
+    if (newCar.imageUrl && typeof newCar.imageUrl !== "string") {
+      console.log("Image in formData:", newCar.imageUrl);
+
+      formData.append("image", newCar.imageUrl);
+
+    }
 
       if (editCarId) {
-        console.log(formData);
+        for (let [key, value] of formData.entries()) {
+  console.log(`${key}:`, value);
+}
 
         await axios.put(`https://dawood-backend-five.vercel.app/cars/${editCarId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        console.log(formData);
+        for (let [key, value] of formData.entries()) {
+  console.log(`${key}:`, value);
+}
         await axios.post("https://dawood-backend-five.vercel.app/cars/car-add", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -226,7 +234,7 @@ formData.append("popular", newCar.popular.toString());
       const newStatus =
         selectedCar.isAvailable === "Available" ? "Booked" : "Available";
 
-      await axios.put(`https://dawood-backend-five.vercel.app//cars/${id}`, {
+      await axios.put(`https://dawood-backend-five.vercel.app/cars/${id}`, {
         isAvailable: newStatus,
       });
 
@@ -441,7 +449,7 @@ formData.append("popular", newCar.popular.toString());
                   <TableCell>
                     {car.imageUrl && (
                       <img
-                        src={`https://dawood-backend-five.vercel.app/${car.imageUrl}`}
+                        src={`${car.imageUrl}`}
                         alt="Car"
                         className="w-20 h-12 object-cover rounded"
                       />

@@ -145,103 +145,118 @@ export default function Testimonials() {
           <div className="relative">
             <div ref={sliderRef} className="overflow-hidden">
               <div className="hidden md:grid md:grid-cols-3 gap-6">
-                <AnimatePresence mode="wait" onExitComplete={() => setIsAnimating(false)}>
-                  {getVisibleTestimonials().map((testimonial) => (
-                    <motion.div
-                      key={`${testimonial.id}-${currentIndex}`}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -50 }}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                      className="bg-white rounded-xl p-8 shadow-lg border border-gray-100 relative group hover:shadow-xl transition-all duration-300"
-                    >
-                      {/* Quote Icon */}
-                      <div className="absolute -top-4 -left-4 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white shadow-md">
-                        <Quote className="w-5 h-5" />
-                      </div>
+               <AnimatePresence>
+  {getVisibleTestimonials().map((testimonial) => (
+    <motion.div
+      key={`${testimonial.id}-${currentIndex}`} // unique key is important
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="bg-white rounded-xl p-8 shadow-lg border border-gray-100 relative group hover:shadow-xl transition-all duration-300"
+    >
+      {/* Quote Icon */}
+      <div className="absolute -top-4 -left-4 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white shadow-md">
+        <Quote className="w-5 h-5" />
+      </div>
 
-                      <div className="flex mb-4">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            size={18}
-                            className={`${
-                              i < testimonial.rating ? "text-orange-500 fill-orange-500" : "text-gray-300 fill-gray-300"
-                            } transition-all duration-300 group-hover:scale-110 group-hover:rotate-[5deg]`}
-                            style={{
-                              transitionDelay: `${i * 50}ms`,
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <p className="text-gray-700 mb-6 leading-relaxed">"{testimonial.text}"</p>
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-200 shadow-sm">
-                          <Image
-                            src={testimonial.image || "/placeholder.svg?height=48&width=48"}
-                            alt={testimonial.name}
-                            width={48}
-                            height={48}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
-                          <p className="text-orange-600 text-sm">{testimonial.position}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
+      {/* Stars */}
+      <div className="flex mb-4">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            size={18}
+            className={`${
+              i < testimonial.rating
+                ? "text-orange-500 fill-orange-500"
+                : "text-gray-300 fill-gray-300"
+            } transition-all duration-300 group-hover:scale-110 group-hover:rotate-[5deg]`}
+            style={{
+              transitionDelay: `${i * 50}ms`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Testimonial Text */}
+      <p className="text-gray-700 mb-6 leading-relaxed">
+        "{testimonial.text}"
+      </p>
+
+      {/* Author */}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-200 shadow-sm">
+          <Image
+            src={testimonial.image || "/placeholder.svg?height=48&width=48"}
+            alt={testimonial.name}
+            width={48}
+            height={48}
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <div>
+          <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+          <p className="text-orange-600 text-sm">{testimonial.position}</p>
+        </div>
+      </div>
+    </motion.div>
+  ))}
+</AnimatePresence>
+
               </div>
 
               {/* Mobile Testimonial Slider */}
               <div className="md:hidden">
-                <AnimatePresence mode="wait" onExitComplete={() => setIsAnimating(false)}>
-                  <motion.div
-                    key={currentIndex}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 relative"
-                  >
-                    {/* Quote Icon */}
-                    <div className="absolute -top-4 -left-4 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white shadow-md">
-                      <Quote className="w-4 h-4" />
-                    </div>
+               <AnimatePresence mode="wait" onExitComplete={() => setIsAnimating(false)}>
+  <motion.div
+    key={currentIndex}
+    initial={{ opacity: 0, x: 50 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -50 }}
+    transition={{ duration: 0.5 }}
+    className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 relative"
+  >
+    {/* Quote Icon */}
+    <div className="absolute -top-4 -left-4 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white shadow-md">
+      <Quote className="w-4 h-4" />
+    </div>
 
-                    <div className="flex mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={16}
-                          className={`${
-                            i < testimonials[currentIndex].rating
-                              ? "text-orange-500 fill-orange-500"
-                              : "text-gray-300 fill-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-gray-700 mb-6 text-sm leading-relaxed">"{testimonials[currentIndex].text}"</p>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-200">
-                        <Image
-                          src={testimonials[currentIndex].image || "/placeholder.svg?height=40&width=40"}
-                          alt={testimonials[currentIndex].name}
-                          width={40}
-                          height={40}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{testimonials[currentIndex].name}</h4>
-                        <p className="text-orange-600 text-xs">{testimonials[currentIndex].position}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+    <div className="flex mb-4">
+      {[...Array(5)].map((_, i) => (
+        <Star
+          key={i}
+          size={16}
+          className={`${
+            i < testimonials[currentIndex].rating
+              ? "text-orange-500 fill-orange-500"
+              : "text-gray-300 fill-gray-300"
+          }`}
+        />
+      ))}
+    </div>
+
+    <p className="text-gray-700 mb-6 text-sm leading-relaxed">
+      "{testimonials[currentIndex].text}"
+    </p>
+
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-200">
+        <Image
+          src={testimonials[currentIndex].image || "/placeholder.svg?height=40&width=40"}
+          alt={testimonials[currentIndex].name}
+          width={40}
+          height={40}
+          className="object-cover w-full h-full"
+        />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">{testimonials[currentIndex].name}</h4>
+        <p className="text-orange-600 text-xs">{testimonials[currentIndex].position}</p>
+      </div>
+    </div>
+  </motion.div>
+</AnimatePresence>
+
               </div>
             </div>
 
