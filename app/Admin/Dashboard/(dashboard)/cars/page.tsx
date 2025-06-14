@@ -441,7 +441,7 @@ formData.append("popular", newCar.popular.toString());
                   <TableCell>
                     {car.imageUrl && (
                       <img
-                        src={`https://dawood-backend-five.vercel.app/${car.imageUrl}`}
+                        src={`${car.imageUrl}`}
                         alt="Car"
                         className="w-20 h-12 object-cover rounded"
                       />
