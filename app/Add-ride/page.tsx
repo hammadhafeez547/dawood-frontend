@@ -40,7 +40,7 @@ export default function AddRidePage() {
       if (!response.ok) throw new Error("Failed to add ride");
       
       toast.success("Ride added successfully");
-      router.push("/admin/bookings");
+      router.push("/Admin/Dashboard/rides");
     } catch (error) {
       toast.error("Failed to add ride");
       console.error(error);

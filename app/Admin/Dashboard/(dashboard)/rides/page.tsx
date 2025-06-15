@@ -19,9 +19,7 @@ import { useRouter } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 
-interface Car {
-  name: string;
-}
+
 
 interface Booking {
   _id: string;
@@ -30,7 +28,7 @@ interface Booking {
   drop: string;
   price?: number; // Make price optional
   status: "pending" | "confirmed" | "completed";
-  car?: Car;
+  car: string | null; 
 }
 
 export default function AdminBookings() {
@@ -107,7 +105,7 @@ export default function AdminBookings() {
             <Card key={ride._id} className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                  <span>{ride.car?.name ?? "No Car Assigned"}</span>
+                  <span>{ride.car ?? "No Car Assigned"}</span>
                   <span className={`text-xs px-2 py-1 rounded-full ${
                     ride.status === "pending" ? "bg-yellow-100 text-yellow-800" :
                     ride.status === "confirmed" ? "bg-blue-100 text-blue-800" :
@@ -133,7 +131,7 @@ export default function AdminBookings() {
                 <div className="space-y-1">
                   <p className="font-medium">Price</p>
                   <p className="text-sm text-muted-foreground">
-                    {ride.price ? `PKR ${ride.price.toLocaleString()}` : "Price not set"}
+                    {ride.price ? `SNR ${ride.price.toLocaleString()}` : "Price not set"}
                   </p>
                 </div>
                 
