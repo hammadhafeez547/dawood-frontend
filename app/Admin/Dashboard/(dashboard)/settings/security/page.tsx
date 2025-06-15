@@ -51,7 +51,7 @@ export default function SecuritySettingsPage() {
       const token = localStorage.getItem("token")
 
       const res = await axios.put(
-        "https://dawood-backend-five.vercel.app/auth/change-password",
+        "http://localhost:4000/auth/change-password",
         { ...formData, user },
         {
           headers: {

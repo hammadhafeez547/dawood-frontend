@@ -38,7 +38,7 @@ export default function CarDashboardPage() {
 
   const fetchCars = async () => {
     try {
-      const res = await axios.get("https://dawood-backend-five.vercel.app/cars/all-cars");
+      const res = await axios.get("http://localhost:4000/cars/all-cars");
       setCars(res.data.length);
     } catch (error) {
       console.error(error);
