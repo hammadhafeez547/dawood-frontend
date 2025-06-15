@@ -120,7 +120,7 @@ export default function AddRidePage() {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push("/admin/bookings")}
+            onClick={() => router.push("/Add-ride")}
           >
             Cancel
           </Button>
