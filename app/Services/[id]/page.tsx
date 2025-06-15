@@ -126,7 +126,7 @@ export default function ServiceDetails() {
   const fetchRoutes = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.get(`http://localhost:4000/service/${id}`)
+      const res = await axios.get(`https://dawood-backend-five.vercel.app/service/${id}`)
       console.log("API Response:", res.data)
       setCars(res.data)
     } catch (err) {

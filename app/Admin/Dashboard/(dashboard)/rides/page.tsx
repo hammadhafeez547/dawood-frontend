@@ -45,7 +45,7 @@ export default function AdminBookings() {
   const fetchBookings = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("http://localhost:4000/ride/");
+      const res = await fetch("https://dawood-backend-five.vercel.app/ride/");
       if (!res.ok) throw new Error("Failed to fetch bookings");
       const data: Booking[] = await res.json();
       setBookings(data);
@@ -59,7 +59,7 @@ export default function AdminBookings() {
 
   const handleStatusUpdate = async (id: string, newStatus: Booking["status"]) => {
     try {
-      const response = await fetch(`http://localhost:4000/ride/${id}/status`, {
+      const response = await fetch(`https://dawood-backend-five.vercel.app/ride/${id}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
