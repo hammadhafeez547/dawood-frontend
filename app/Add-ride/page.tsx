@@ -13,6 +13,8 @@ export default function AddRidePage() {
     pickup: "",
     drop: "",
     price: "",
+    phone: "",
+    car: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -26,7 +28,7 @@ export default function AddRidePage() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch("https://dawood-backend-five.vercel.app/ride/", {
+      const response = await fetch("https://dawood-backend-five.vercel.app/ride/booking-add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -77,6 +79,27 @@ export default function AddRidePage() {
           <Input
             name="drop"
             value={formData.drop}
+            onChange={handleChange}
+            required
+          />
+        </div>
+         <div>
+          <label className="block text-sm font-medium mb-1">Phone</label>
+          <Input
+            name="phone"
+            type="number"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
+        </div>
+           
+        <div>
+          <label className="block text-sm font-medium mb-1">Car</label>
+          <Input
+            name="car"
+            type="string"
+            value={formData.car}
             onChange={handleChange}
             required
           />
