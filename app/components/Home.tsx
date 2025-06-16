@@ -570,7 +570,11 @@ export default function Home() {
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-15 z-3" style={{ transform: `translateX(${scrollY * 0.05}px)` }} />
 
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:pt-12">
+<<<<<<< HEAD
           <div className="text-white text-center max-w-[1100px] mt-12 md:mt-0"> {/* Added mt-12 for mobile */}
+=======
+          <div className="text-white text-center max-w-[1100px]">
+>>>>>>> 0c3eae5238cc139879d7a9ad0913e7e44771729b
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
