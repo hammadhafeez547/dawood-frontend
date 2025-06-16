@@ -48,7 +48,7 @@ export default function RoutesPage() {
 
   const fetchRoutes = async () => {
     try {
-      const res = await axios.get("https://dawood-backend-five.vercel.app/ routes/all-routes");
+      const res = await axios.get("https://dawood-backend-five.vercel.app/routes/all-routes");
       setRoutes(res.data);
     } catch (error) {
       console.error(error);

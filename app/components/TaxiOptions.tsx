@@ -20,7 +20,7 @@ export default function TaxiOptions() {
   
     const fetchCars = async () => {
       try {
-        const res = await axios.get("https://dawood-backend-five.vercel.app/ cars/all-cars");
+        const res = await axios.get("https://dawood-backend-five.vercel.app/cars/all-cars");
               console.log("Cars loaded:", res.data);
 
         setCars(res.data);
