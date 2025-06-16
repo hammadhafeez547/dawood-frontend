@@ -120,7 +120,7 @@ function Page() {
 
       {/* Page Content */}
       <Navbar />
-      <main>
+      <div>
         <Home />
         <UmrahServies />
         <About />
@@ -130,7 +130,7 @@ function Page() {
         <TaxiOptions />
         <CarServices />
         <Testimonials />
-      </main>
+      </div>
       <Footer />
 
       {/* WhatsApp Floating Button */}

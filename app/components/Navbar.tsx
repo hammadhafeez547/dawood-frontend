@@ -269,7 +269,7 @@ export default function Navbar() {
           </div>
         </div>
       </header>
-
+ <div className="h-[125px]"></div>
       {/* WhatsApp Floating Button */}
       {/* <Link
         href="https://wa.me/966580563933"
