@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { ArrowRight, ArrowLeft, Star, Quote } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link"
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -338,14 +339,16 @@ export default function Testimonials() {
               </p>
 
               <div className="flex flex-wrap gap-4">
+               <Link href={"/Book"}>
                 <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3.5 rounded-full inline-flex items-center gap-2 transition-all duration-300 shadow-lg hover:shadow-orange-500/20 group">
                   Book Now
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </button>
+               </Link>
 
-                <button className="bg-transparent hover:bg-white/10 text-white border border-white/30 px-8 py-3.5 rounded-full inline-flex items-center gap-2 transition-all duration-300">
+               <Link href={"/Contact"}> <button className="bg-transparent hover:bg-white/10 text-white border border-white/30 px-8 py-3.5 rounded-full inline-flex items-center gap-2 transition-all duration-300">
                   Contact Us
-                </button>
+                </button></Link>
               </div>
             </motion.div>
 

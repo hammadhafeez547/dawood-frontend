@@ -61,11 +61,11 @@ export default function Footer() {
               <ul className="space-y-3">
                 <li className="text-sm text-gray-400 hover:text-white transition-all flex items-start">
                   <Phone className="mr-2 h-4 w-4 mt-0.5 text-orange-500" />
-                  <span>+966 12 345 6789</span>
+                  <span>+966 53 384 7563</span>
                 </li>
                 <li className="text-sm text-gray-400 hover:text-white transition-all flex items-start">
                   <Mail className="mr-2 h-4 w-4 mt-0.5 text-orange-500" />
-                  <span>info@dawoodtours.com</span>
+                  <span>DiamondDawood@gmail.com</span>
                 </li>
                 <li className="text-sm text-gray-400 hover:text-white transition-all flex items-start">
                   <MapPin className="mr-2 h-4 w-4 mt-0.5 text-orange-500" />

@@ -193,7 +193,7 @@ export default function ContactPage() {
                 <h3 className="text-lg font-semibold mb-2">Call Us</h3>
                 <p className="text-gray-300 text-center">Our customer service team is available to assist you 24/7</p>
                 <a href="tel:+966123456789" className="text-orange-400 font-medium mt-2 hover:text-orange-300">
-                  +966 12 345 6789
+                  +966 53 384 7563
                 </a>
               </motion.div>
 
@@ -213,7 +213,7 @@ export default function ContactPage() {
                   href="mailto:info@dawoodtours.com"
                   className="text-orange-400 font-medium mt-2 hover:text-orange-300"
                 >
-                  info@dawoodtours.com
+                  DiamondDawood@gmail.com
                 </a>
               </motion.div>
 
