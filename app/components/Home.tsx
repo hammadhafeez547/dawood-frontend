@@ -570,11 +570,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-15 z-3" style={{ transform: `translateX(${scrollY * 0.05}px)` }} />
 
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:pt-12">
-<<<<<<< HEAD
           <div className="text-white text-center max-w-[1100px] mt-12 md:mt-0"> {/* Added mt-12 for mobile */}
-=======
-          <div className="text-white text-center max-w-[1100px]">
->>>>>>> 0c3eae5238cc139879d7a9ad0913e7e44771729b
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -590,7 +586,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-2 tracking-wide px-2" {/* Added px-2 for better mobile spacing */}
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-2 tracking-wide px-2"
             >
               Dawood Hajj & Umrah Transportation
             </motion.h1>
@@ -599,7 +595,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-              className="text-base md:text-xl font-light leading-relaxed max-w-3xl mx-auto text-gray-200 px-4" {/* Added px-4 for better mobile spacing */}
+              className="text-base md:text-xl font-light leading-relaxed max-w-3xl mx-auto text-gray-200 px-4" 
             >
               Your reliable transport solution in Saudi Arabia for sacred journeys. Specializing in comfortable, safe transfers between Makkah, Madinah, and all holy sites.
             </motion.p>
@@ -609,7 +605,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-              className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-6" {/* Adjusted gap for mobile */}
+              className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-6" 
             >
               <div className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
@@ -629,13 +625,13 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
-              className="mt-8 flex flex-col sm:flex-row justify-center gap-4 px-4" {/* Added px-4 for better mobile spacing */}
+              className="mt-8 flex flex-col sm:flex-row justify-center gap-4 px-4"
             >
               <Link href={"/Packages"}>
                 <motion.button
                   whileHover={{ scale: 1.05, backgroundColor: "#ea580c" }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-orange-600 text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-md shadow-lg transition duration-300 font-medium flex items-center justify-center gap-2 group" {/* Adjusted padding for mobile */}
+                  className="bg-orange-600 text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-md shadow-lg transition duration-300 font-medium flex items-center justify-center gap-2 group"
                 >
                   <Calendar className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
                   <span className="group-hover:translate-x-1 transition-transform duration-300">Our Services</span>
@@ -645,7 +641,7 @@ export default function Home() {
                 <motion.button
                   whileHover={{ scale: 1.05, backgroundColor: "#f8fafc" }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-white/90 hover:bg-white text-gray-800 px-6 sm:px-8 py-3 sm:py-3.5 rounded-md shadow-lg transition duration-300 font-medium flex items-center justify-center gap-2 group" {/* Adjusted padding for mobile */}
+                  className="bg-white/90 hover:bg-white text-gray-800 px-6 sm:px-8 py-3 sm:py-3.5 rounded-md shadow-lg transition duration-300 font-medium flex items-center justify-center gap-2 group" 
                 >
                   <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
                   <span className="group-hover:translate-x-1 transition-transform duration-300">Instant Booking</span>
