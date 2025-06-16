@@ -71,7 +71,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80 z-2" />
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-15 z-3" style={{ transform: `translateX(${scrollY * 0.05}px)` }} />
 
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
+        <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:pt-12">
           <div className="text-white text-center max-w-[1100px]">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
