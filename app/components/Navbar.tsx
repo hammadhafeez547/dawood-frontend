@@ -11,23 +11,34 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [logoLoaded, setLogoLoaded] = useState(false)
+const [scrollPosition, setScrollPosition] = useState(0);
 
   // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10)
-    const handleClickOutside = (e: MouseEvent) => {
-      if (isMenuOpen && !(e.target as HTMLElement).closest(".mobile-menu") && !(e.target as HTMLElement).closest(".menu-button")) {
-        setIsMenuOpen(false)
-      }
-    }
+ 
+// Update your useEffect hook to handle scrolling better
+useEffect(() => {
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 10);
+    setScrollPosition(window.scrollY);
+  };
 
-    window.addEventListener("scroll", handleScroll)
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-      document.removeEventListener("mousedown", handleClickOutside)
+  const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (isMenuOpen && 
+        !target.closest(".mobile-menu") && 
+        !target.closest(".menu-button")) {
+      setIsMenuOpen(false);
     }
-  }, [isMenuOpen])
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  document.addEventListener("mousedown", handleClickOutside);
+  
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isMenuOpen]);
 
   const toggleDropdown = (name: string) => {
     setActiveDropdown(activeDropdown === name ? null : name)
@@ -75,14 +86,14 @@ export default function Navbar() {
           </div>
           
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2 group">
+            {/* <div className="hidden md:flex items-center space-x-2 group">
               <div className="bg-orange-700/50 rounded-full p-1.5 group-hover:bg-orange-600 transition-all">
                 <User className="h-4 w-4 text-orange-100" />
               </div>
               <Link href="/client-portal" className="group-hover:text-orange-200 transition-colors">
                 Client Portal
               </Link>
-            </div>
+            </div> */}
             
             <div className="flex items-center space-x-3">
               {['facebook', 'instagram', 'youtube'].map((social) => (
@@ -187,9 +198,20 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`lg:hidden fixed inset-0 z-40 transition-opacity duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-          <div className="absolute inset-0 bg-black/50" onClick={() => setIsMenuOpen(false)} />
-          <div className={`absolute top-[45px] right-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+     <div className={`lg:hidden fixed inset-0 z-50 transition-all duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
+  <div 
+    className="absolute inset-0 bg-black/50" 
+    onClick={() => setIsMenuOpen(false)} 
+    style={{ top: `${scrollPosition}px` }} // Add this line
+  />
+  <div 
+    className={`fixed right-0 w-80 bg-white shadow-xl transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+    style={{ 
+      top: `${45 + scrollPosition}px`, // 45px is your contact bar height
+      height: `calc(100vh - ${45 + scrollPosition}px)`
+    }}
+    onClick={(e) => e.stopPropagation()}
+  >
             <div className="flex justify-between items-center p-4 border-b border-gray-200">
               <Link href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
                 <Image src="/logo.png" alt="Logo" width={160} height={60} className="h-10 w-auto" />

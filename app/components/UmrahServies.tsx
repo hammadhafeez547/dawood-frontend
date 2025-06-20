@@ -81,8 +81,8 @@ function UmrahServices() {
 
     // Submit form
     setIsSubmitting(true)
-    const message = `Name: ${formData.name}\nPickup Location: ${formData.location}`
-    const whatsappLink = `https://wa.me/923207882400?text=${encodeURIComponent(message)}`
+    const message = ` My Name is: ${formData.name}\nPickup Location: ${formData.location}`
+    const whatsappLink = `https://wa.me/966580563933?text=${encodeURIComponent(message)}`
     window.open(whatsappLink, "_blank")
 
     // Simulate API call
